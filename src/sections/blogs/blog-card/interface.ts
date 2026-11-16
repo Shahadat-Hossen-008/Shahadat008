@@ -5,10 +5,5 @@ export type BlogPostItem = NonNullable<
 >[number];
 
 export interface IBlogCardProps {
-  slug: string;
-  blogTitle: string;
-  publishedDate: string | null;
-  publishedAt?: string | null;
-  categories: string[];
-  excerpt?: string | null;
+  blogPost: BlogPostItem;
 }

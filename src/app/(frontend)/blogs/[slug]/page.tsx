@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import {
-  BlogDetailsPageBuilder,
+  BlogDetailsView,
   generateBlogDetailsMetadata,
   getBlogPost,
   type IBlogPostPageProps,
@@ -22,5 +22,5 @@ export default async function BlogPostPage({ params }: IBlogPostPageProps) {
     notFound();
   }
 
-  return <BlogDetailsPageBuilder blog={blogPost} />;
+  return <BlogDetailsView blog={blogPost} />;
 }

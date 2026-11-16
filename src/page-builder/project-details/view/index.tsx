@@ -41,7 +41,7 @@ export function ProjectDetailsView({ project }: IProjectDetailsProps) {
 
   return (
     <article className="bg-background text-foreground pb-24 sm:pb-32">
-      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20">
+      <div className="mx-auto w-full max-w-detail px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20">
         {/* Back Link */}
         <Link
           href="/projects"
@@ -74,13 +74,13 @@ export function ProjectDetailsView({ project }: IProjectDetailsProps) {
         )}
 
         {/* Project Title */}
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-normal text-balance text-foreground leading-[1.08] tracking-tight max-w-reading">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-normal text-balance text-foreground leading-[1.08] tracking-tight">
           {project.projectTitle}
         </h1>
 
         {/* Lead Narrative Description */}
         {description && (
-          <p className="mt-5 font-sans text-base sm:text-lg lg:text-xl font-normal leading-relaxed text-muted-foreground max-w-reading text-pretty">
+          <p className="mt-5 font-sans text-base sm:text-lg lg:text-xl font-normal leading-relaxed text-muted-foreground text-pretty">
             {description}
           </p>
         )}
