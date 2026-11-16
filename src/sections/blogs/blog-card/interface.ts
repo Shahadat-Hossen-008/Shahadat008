@@ -1,11 +1,9 @@
-import type { BLOG_POSTS_QUERYResult } from "@/sanity/types";
+import type { BLOG_PAGE_QUERYResult } from "@/sanity/types";
 
-export type BlogPost = BLOG_POSTS_QUERYResult[number];
+export type BlogPostItem = NonNullable<
+  NonNullable<BLOG_PAGE_QUERYResult>["blogPosts"]
+>[number];
 
 export interface IBlogCardProps {
-  slug: string;
-  blogTitle: string;
-  publishedDate: string | null;
-  mainImage: BlogPost["mainImage"];
-  blogContent: BlogPost["blogContent"];
+  blogPost: BlogPostItem;
 }

@@ -261,7 +261,7 @@ describe("public route resolution", () => {
   it("resolves implemented routes and rejects missing frontend routes", () => {
     expect(resolveRoute("myProfilePage")).toBe("/");
     expect(resolveRoute("blogPost", "hello-world")).toBe(
-      "/blog/hello-world",
+      "/blogs/hello-world",
     );
     expect(resolveRoute("aboutPage", "about")).toBe("/about");
     expect(resolveRoute("projectPage", "projects")).toBe("/projects");
@@ -291,7 +291,7 @@ describe("link resolution", () => {
         type: "internal",
         reference: { _type: "blogPost", slug: "post-1" },
       }),
-    ).toBe("/blog/post-1");
+    ).toBe("/blogs/post-1");
     expect(
       resolveLink({ type: "external", url: "https://mysite.com/about" }),
     ).toBe("https://mysite.com/about");

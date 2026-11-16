@@ -1,5 +1,5 @@
-import type { BLOG_POSTS_QUERYResult } from "@/sanity/types";
+import type { BLOG_PAGE_QUERYResult } from "@/sanity/types";
 
 export interface IBlogPageBuilderProps {
-  posts: BLOG_POSTS_QUERYResult | null;
+  page: BLOG_PAGE_QUERYResult;
 }

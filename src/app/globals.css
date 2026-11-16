@@ -67,6 +67,7 @@
   --container-reading: 48rem;  /* 768px (max-w-3xl) — long-form narratives */
   --container-default: 64rem;  /* 1024px (max-w-5xl) — default content width */
   --container-page: 68rem;     /* 1088px — outer shell (64rem / 1024px content with lg:px-8) */
+  --container-detail: 60rem;   /* 960px — detail pages (56rem / 896px content with lg:px-8) */
   --container-wide: 72rem;     /* 1152px (max-w-6xl) — wide project imagery & diagrams */
   --breakpoint-bento: 53.75rem;
 
@@ -162,6 +163,24 @@
   &:hover,
   &:focus-visible {
     background-size: 100% 1.5px;
+  }
+}
+@utility heading-hover-underline {
+  box-decoration-break: clone;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 2px;
+  padding-bottom: 0.125rem;
+  text-decoration: none;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: background-size 300ms var(--ease-soft);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 2px;
   }
 }
 

@@ -1,14 +1,18 @@
-import { BlogCardBuilder } from "@/sections/blogs/blog-card/builder";
+import { BlogListSection } from "@/sections/blogs/blog-list";
+import { SectionBuilder } from "@/sections/section-builder";
 import type { IBlogPageBuilderProps } from "./interface";
 
-export function BlogPageBuilder({ posts }: IBlogPageBuilderProps) {
+export function BlogPageBuilder({ page }: IBlogPageBuilderProps) {
   return (
-    <div className="mx-auto w-full max-w-page bg-background px-4 pt-20 pb-4 text-foreground sm:px-6 lg:px-8 lg:pb-20">
-      <h2 className="pb-8 text-2xl font-bold sm:text-4xl">Blogs</h2>
-      {posts?.map((blogPost) => (
-        <BlogCardBuilder key={blogPost._id} blogPost={blogPost} />
-      ))}
-    </div>
+    <main className="pt-8 pb-28">
+      <BlogListSection
+        eyebrow={page?.eyebrow}
+        heading={page?.heading}
+        headingAccent={page?.headingAccent}
+        posts={page?.blogPosts ?? []}
+      />
+      {page?.sections && <SectionBuilder sections={page.sections} />}
+    </main>
   );
 }
 

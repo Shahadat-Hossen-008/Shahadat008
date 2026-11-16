@@ -11,31 +11,38 @@ export default defineType({
       name: "fullName",
       title: "Full Name",
       type: "string",
-      description:
-        "The fullname of the person.",
+      description: "The full name of the author.",
       validation: (rule: StringRule) =>
-        rule.required().error("Please provide the fullname."),
+        rule.required().error("Please provide the full name."),
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Role / Title",
       type: "text",
-      rows: 3,
+      rows: 2,
       description:
-        "A short description of the author to be used in author role.",
+        "Short role or title shown in the article byline, e.g. “Software Engineer”.",
       validation: (rule: StringRule) =>
-        rule.required().error("Please provide a short description."),
+        rule.required().error("Please provide a short role or description."),
+    }),
+    defineField({
+      name: "avatar",
+      title: "Avatar",
+      type: "customImage",
+      description: "Optional profile photo shown beside the author byline.",
     }),
   ],
   preview: {
     select: {
       fullName: "fullName",
+      role: "description",
+      media: "avatar.imageFile",
     },
-    prepare({ fullName }) {
+    prepare({ fullName, role, media }) {
       return {
         title: fullName,
-        media: UserIcon,
-        subtitle: "Author",
+        media: media ?? UserIcon,
+        subtitle: role || "Author",
       };
     },
   },
