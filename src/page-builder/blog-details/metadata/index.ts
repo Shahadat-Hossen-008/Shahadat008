@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
-import { buildPageMetadata } from "@/page-builder/shared/metadata";
 import { getRedirectTarget } from "@/lib/metadata";
+import { buildPageMetadata } from "@/page-builder/shared/metadata";
 import { getBlogPost } from "../data/loader";
 
 export async function generateBlogDetailsMetadata({
@@ -15,8 +15,16 @@ export async function generateBlogDetailsMetadata({
   const [{ data: post }, metadata] = await Promise.all([
     postResult,
     buildPageMetadata({
-      pageSeo: postResult.then(({ data }) => data?.seo),
-      path: `/blog/${slug}`,
+      pageSeo: postResult.then(({ data }) =>
+        data
+          ? {
+              ...data.seo,
+              title: data.seo?.title || data.blogTitle,
+              description: data.seo?.description || data.excerpt,
+            }
+          : null,
+      ),
+      path: `/blogs/${slug}`,
     }),
   ]);
 
