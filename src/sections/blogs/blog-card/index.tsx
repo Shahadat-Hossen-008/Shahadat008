@@ -1,58 +1,53 @@
-import { PortableText } from "next-sanity";
-import Image from "next/image";
 import Link from "next/link";
 
-import { previewPortableTextComponents } from "@/components/preview-portable-text";
-import { urlFor } from "@/sanity/lib/image";
 import type { IBlogCardProps } from "./interface";
 
 export function BlogCard({
   slug,
   blogTitle,
   publishedDate,
-  mainImage,
-  blogContent,
+  publishedAt,
+  categories,
+  excerpt,
 }: IBlogCardProps) {
   return (
-    <Link
-      href={`/blog/${slug}`}
-      className="group block p-4 bg-background/80 transition duration-300"
-    >
-      <div className="flex flex-col md:flex-row items-start gap-6">
-        {mainImage?.imageFile && (
-          <div className="w-full md:flex-1 h-64 sm:h-80 rounded-lg">
-            <Image
-              src={urlFor(mainImage.imageFile).width(800).height(320).url()}
-              alt={blogTitle || "Blog image"}
-              width={800}
-              height={320}
-              className="rounded-lg w-full h-full"
-              unoptimized
-            />
-          </div>
-        )}
-
-        <div className="flex-1 flex flex-col gap-4">
-          <h2 className="text-2xl font-bold mb-2">
-            <span className="link-hover-underline">{blogTitle}</span>
-          </h2>
-          {publishedDate && (
-            <p className="text-muted-foreground text-sm">
-              Published on {publishedDate}
-            </p>
+    <article className="group relative py-8 sm:py-10">
+      {(publishedDate || categories.length > 0) && (
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          {publishedDate ? (
+            <time
+              dateTime={publishedAt ?? undefined}
+              className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+            >
+              {publishedDate}
+            </time>
+          ) : (
+            <span />
           )}
 
-          {blogContent && (
-            <div className="text-sm text-muted-foreground mb-4 line-clamp-8">
-              <PortableText
-                value={blogContent}
-                components={previewPortableTextComponents}
-              />
-            </div>
+          {categories.length > 0 && (
+            <span className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {categories.join(" · ")}
+            </span>
           )}
         </div>
-      </div>
-    </Link>
+      )}
+
+      <h2 className="font-display text-2xl sm:text-3xl font-bold leading-snug tracking-tight text-foreground">
+        <Link
+          href={`/blogs/${slug}`}
+          className="heading-hover-underline after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+        >
+          {blogTitle}
+        </Link>
+      </h2>
+
+      {excerpt && (
+        <p className="mt-3 max-w-2xl font-sans text-base leading-relaxed text-muted-foreground text-pretty">
+          {excerpt}
+        </p>
+      )}
+    </article>
   );
 }
 

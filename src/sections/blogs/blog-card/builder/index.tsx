@@ -1,25 +1,26 @@
 import { formatDate } from "@/lib/formatDate";
+import { cleanText } from "@/sections/shared/section-formatting";
 import { BlogCard } from "../index";
-import type { IBlogCardProps } from "../interface";
 import type { ISanityBlogCardProps } from "./interface";
 
 export function BlogCardBuilder({ blogPost }: ISanityBlogCardProps) {
-  if (!blogPost) return null;
+  const title = cleanText(blogPost?.blogTitle);
+  if (!blogPost?.slug || !title) return null;
 
-  const { blogContent, blogTitle, slug, mainImage, publishedAt } = blogPost;
+  const categories = (blogPost.categories ?? [])
+    .map((category) => cleanText(category?.title))
+    .filter((tag): tag is string => Boolean(tag));
 
-  // Prevent runtime crash if slug is missing
-  if (!slug?.current) return null;
-
-  const props: IBlogCardProps = {
-    slug: slug.current,
-    blogTitle: blogTitle || "Untitled",
-    publishedDate: formatDate(publishedAt),
-    mainImage,
-    blogContent,
-  };
-
-  return <BlogCard {...props} />;
+  return (
+    <BlogCard
+      slug={blogPost.slug}
+      blogTitle={title}
+      publishedDate={formatDate(blogPost.publishedAt, "MMMM d, yyyy")}
+      publishedAt={blogPost.publishedAt}
+      categories={categories}
+      excerpt={cleanText(blogPost.excerpt)}
+    />
+  );
 }
 
 export default BlogCardBuilder;

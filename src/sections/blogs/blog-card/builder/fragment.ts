@@ -1,13 +1,9 @@
-import { PORTABLE_TEXT_PROJECTION } from "@/fragments";
-
 export const BLOG_CARD_FRAGMENT = /* groq */ `
   _id,
   _createdAt,
   blogTitle,
-  slug,
-  mainImage,
-  categories[]->{_id, title},
-  author,
-  publishedAt,
-  "blogContent": blogContent${PORTABLE_TEXT_PROJECTION}
+  "slug": slug.current,
+  excerpt,
+  categories[]->{ _id, title },
+  publishedAt
 `;

@@ -1,5 +1,5 @@
-import type { BlogPost } from "../interface";
+import type { BlogPostItem } from "../interface";
 
 export interface ISanityBlogCardProps {
-  blogPost: BlogPost;
+  blogPost: BlogPostItem;
 }
