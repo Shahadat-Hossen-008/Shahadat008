@@ -1,8 +1,10 @@
 import { DocumentIcon } from "@sanity/icons";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { SiSanity } from "react-icons/si";
 
+import { splitHeadline } from "@/lib/hero";
 import { seo, seoGroup } from "@/sanity/_root/seo";
+import { slug } from "@/sanity/_root/seo/slug";
 
 export default defineType({
   name: "blogPost",
@@ -21,8 +23,9 @@ export default defineType({
   fields: [
     /**
      * Per-article SEO. `includeSlug: false` because `blogPost` already owns a
-     * top level `slug` that drives `/blog/[slug]` — a second slug here would be
-     * a second source of truth for the same URL.
+     * top level `slug` that drives `/blogs/[slug]` — a second slug here would
+     * be a second source of truth for the same URL. `seo.openGraph.image`
+     * serves as the article's social/OG preview image.
      */
     seo({ group: "seo", includeSlug: false, optional: true }),
     defineField({
@@ -32,58 +35,96 @@ export default defineType({
       group: "content",
       validation: (Rule) =>
         Rule.required().error(
-          "Blog title is required to generate a page on the website",
+          "Blog title is required to generate a page on the website.",
         ),
     }),
     defineField({
-      name: "slug",
-      title: "Slug",
-      type: "slug",
+      name: "titleAccent",
+      title: "Title Accent",
+      type: "string",
       group: "content",
-      options: { source: "blogTitle" },
-      validation: (Rule) =>
-        Rule.required().error("slug is required generate a page on the website"),
+      description:
+        "Optional. A phrase from the blog title shown in italic, e.g. “Intent-Based”. Must match exact case.",
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          if (typeof value !== "string" || !value.trim()) return true;
+          const title = (context.parent as { blogTitle?: string } | undefined)
+            ?.blogTitle;
+          return splitHeadline(title, value).length === 3
+            ? true
+            : "Title accent must appear in the blog title with matching case.";
+        }),
     }),
+    {
+      ...slug({ source: "blogTitle", isFixed: false, prefix: "blogs" }),
+      group: "content",
+    },
     defineField({
       name: "author",
       title: "Author",
-      type: "string",
+      type: "reference",
+      to: [{ type: "author" }],
       group: "content",
+      validation: (Rule) =>
+        Rule.required().error("Please select an author for this post."),
     }),
     defineField({
       name: "publishedAt",
       title: "Published At",
       type: "datetime",
       group: "content",
+      validation: (Rule) =>
+        Rule.required().error("Please provide a publish date."),
     }),
     defineField({
-      name: "mainImage",
-      title: "Blog Image",
-      type: "customImage",
+      name: "categories",
+      title: "Blog Tags",
+      type: "array",
+      description: "Topics used for tagging and filtering on the blog page.",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "blogTag" }],
+        }),
+      ],
+      validation: (rule) => rule.unique().max(4),
       group: "content",
+    }),
+    defineField({
+      name: "excerpt",
+      title: "Excerpt",
+      type: "text",
+      rows: 3,
+      group: "content",
+      description:
+        "Short 1–2 sentence summary shown on the blog index. Max 220 characters.",
+      validation: (rule) =>
+        rule
+          .required()
+          .max(220)
+          .error("Please provide a concise excerpt (max 220 characters)."),
     }),
     defineField({
       name: "blogContent",
       title: "Blog Content",
       type: "portableText",
       group: "content",
-    }),
-    defineField({
-      name: "categories",
-      title: "Categories",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "blogTag" }] }],
-      group: "content",
+      validation: (rule) =>
+        rule.required().error("Blog content cannot be empty."),
     }),
   ],
   preview: {
     select: {
       title: "blogTitle",
-      author: "author",
-      media: "mainImage.imageFile",
+      authorName: "author.fullName",
+      media: "author.avatar.imageFile",
     },
-    prepare({ title, media, author }) {
-      return { title, media, subtitle: author && `by ${author}` };
+    prepare({ title, media, authorName }) {
+      return {
+        title,
+        media: media ?? DocumentIcon,
+        subtitle: authorName ? `by ${authorName}` : undefined,
+      };
     },
   },
 });
