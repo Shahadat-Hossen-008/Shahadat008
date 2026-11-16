@@ -215,11 +215,12 @@ describe("Editorial Portable Text components", () => {
       <CustomPortableText value={value as never} />,
     );
 
-    // Editorial Section 1: single-column structure (label above heading above body), no twoColumn grid
+    // Editorial Section 1: twoColumn layout (4fr label left, 8fr heading + body right)
+    expect(html).toContain('data-editorial-section="twoColumn"');
+    expect(html).toContain("bento:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]");
+    // Editorial Section 2: straightforward single-column layout using full parent width
     expect(html).toContain('data-editorial-section="single"');
-    expect(html).not.toContain('data-editorial-section="twoColumn"');
-    expect(html).not.toContain("bento:grid-cols-[minmax(0,4fr)_minmax(0,8fr)]");
-    expect(html).not.toContain("bento:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]");
+    expect(html).not.toContain("max-w-reading");
     expect(html).toContain("01 — THE PROBLEM");
     expect(html).toContain(
       "Publishing tools should not get in the way of reading.",
@@ -442,8 +443,7 @@ describe("Editorial Portable Text components", () => {
     );
 
     expect(html).toContain('data-editorial-renderer="true"');
-    expect(html).toContain('data-editorial-section="single"');
-    expect(html).not.toContain('data-editorial-section="twoColumn"');
+    expect(html).toContain('data-editorial-section="twoColumn"');
     expect(html).not.toContain("bento:col-span-2");
     expect(html).toContain('data-editorial-blockquote="true"');
     expect(html).toContain('data-editorial-code="true"');

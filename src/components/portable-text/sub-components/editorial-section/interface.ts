@@ -2,10 +2,11 @@ import type { PortableTextBlock } from "next-sanity";
 
 export interface IEditorialSectionProps {
   /**
-   * Preserved for backward compatibility with existing Sanity documents (`twoColumn` | `straightforward`),
-   * while `EditorialSectionBlock` always renders in a unified single-column editorial structure.
+   * Controls the section layout within the parent container's full width:
+   * - `twoColumn` (default): label on the left, heading and body on the right.
+   * - `straightforward`: single-column narrative flow.
    */
-  layout?: "straightforward" | string | null;
+  layout?: "twoColumn" | "straightforward" | string | null;
   label?: string | null;
   autoNumber?: boolean | null;
   stepNumber?: number | null;
