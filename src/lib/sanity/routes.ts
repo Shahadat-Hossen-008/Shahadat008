@@ -24,8 +24,9 @@ export const ROUTES_BY_TYPE = {
   projectPage: () => "/projects",
   project: (slug?: string | null) =>
     slug ? `/projects/${encodeURIComponent(slug)}` : null,
+  blogPage: () => "/blogs",
   blogPost: (slug?: string | null) =>
-    slug ? `/blog/${encodeURIComponent(slug)}` : null,
+    slug ? `/blogs/${encodeURIComponent(slug)}` : null,
 } as const;
 
 export type RoutedType = keyof typeof ROUTES_BY_TYPE;
