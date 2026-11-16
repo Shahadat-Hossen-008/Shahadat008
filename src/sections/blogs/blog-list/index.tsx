@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { SectionHeading } from "@/components/section-heading";
-import { BlogCardBuilder } from "../blog-card/builder";
+import { BlogCard } from "../blog-card";
 import { filterPostsByTag, getBlogTags } from "./helpers";
 import type { IBlogListSectionProps } from "./interface";
 
@@ -101,7 +101,7 @@ export function BlogListSection({
           >
             {filteredPosts.map((post) => (
               <li key={post._id}>
-                <BlogCardBuilder blogPost={post} />
+                <BlogCard blogPost={post} />
               </li>
             ))}
           </ul>
