@@ -1,112 +1,243 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { sendMail } from "@/app/actions/sendEmail";
-import type { FormSubmitData } from "./interface";
+import {
+  CONTACT_SUBJECT_OPTIONS,
+  type FormSubmitData,
+} from "./interface";
+
+const LABEL_CLASS =
+  "font-sans text-xs font-semibold uppercase tracking-[0.18em] text-foreground";
+const INPUT_CLASS =
+  "w-full rounded-lg border border-foreground/20 bg-transparent px-4 py-3.5 font-sans text-base text-foreground placeholder:text-muted-foreground/60 transition-colors duration-200 focus-visible:outline-none focus-visible:border-foreground focus-visible:ring-1 focus-visible:ring-foreground aria-[invalid=true]:border-error aria-[invalid=true]:focus-visible:border-error aria-[invalid=true]:focus-visible:ring-error";
+const ERROR_TEXT_CLASS = "font-sans text-xs font-medium text-error mt-1";
+
+function computeElapsedMs(renderedAt?: number): number | undefined {
+  if (!renderedAt || renderedAt <= 0) return undefined;
+  return Math.max(0, Date.now() - renderedAt);
+}
 
 export function ContactForm() {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    setValue,
+    formState: { errors, isSubmitting },
   } = useForm<FormSubmitData>({
     mode: "onSubmit",
     reValidateMode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "Project Inquiry",
+      message: "",
+      website: "",
+      renderedAt: 0,
+    },
   });
 
+  useEffect(() => {
+    setValue("renderedAt", Date.now());
+  }, [setValue]);
+
   const onSubmit = async (data: FormSubmitData) => {
-    const result = await sendMail(data);
+    const result = await sendMail({
+      ...data,
+      elapsedMs: computeElapsedMs(data.renderedAt),
+    });
+
     if (result.success) {
-      toast.success("Email sent successfully", {
+      toast.success("Message sent successfully", {
         position: "bottom-right",
+        toastId: "contact-form-success",
       });
-      reset();
+      reset({
+        name: "",
+        email: "",
+        subject: "Project Inquiry",
+        message: "",
+        website: "",
+        renderedAt: data.renderedAt,
+      });
     } else {
       toast.error(result.error, {
         position: "bottom-right",
+        toastId: "contact-form-error",
       });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-3 pb-5">
-        <label htmlFor="name">Name</label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="flex flex-col gap-7 sm:gap-8"
+    >
+      {/* Hidden Honeypot Trap for Automated Spam Bots */}
+      <div aria-hidden="true" className="sr-only">
+        <label htmlFor="website">Website</label>
         <input
           type="text"
-          id="name"
-          placeholder="Enter your name"
-          className="w-full px-3 py-4 bg-foreground/5 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-focus-ring transition-all duration-300"
-          maxLength={100}
-          {...register("name", {
-            required: "Please enter your name.",
-            maxLength: { value: 100, message: "Name must be 100 characters or fewer." },
-          })}
+          id="website"
+          tabIndex={-1}
+          autoComplete="off"
+          {...register("website")}
         />
-        {errors.name && <span className="text-red-500 py-1">{errors.name.message}</span>}
       </div>
-      <div className="flex flex-col gap-3 pb-5">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          maxLength={254}
-          className="w-full px-3 py-4 bg-foreground/5 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-focus-ring transition-all duration-300"
-          {...register("email", {
-            required: "Please enter your email address.",
-            pattern: {
-              value: /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i,
-              message: "Invalid email address.",
-            },
-            maxLength: {
-              value: 254,
-              message: "Email must be 254 characters or fewer.",
-            },
-          })}
-        />
-        {errors.email && <span className="text-red-500 py-1">{errors.email.message}</span>}
+
+      {/* Row 1: Full Name & Email Address */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-7">
+        <div className="flex flex-col gap-2.5">
+          <label htmlFor="name" className={LABEL_CLASS}>
+            FULL NAME <span aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            autoComplete="name"
+            placeholder="What should I call you?"
+            maxLength={100}
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            className={INPUT_CLASS}
+            {...register("name", {
+              required: "Please enter your name.",
+              maxLength: {
+                value: 100,
+                message: "Name must be 100 characters or fewer.",
+              },
+            })}
+          />
+          {errors.name && (
+            <p id="name-error" role="alert" className={ERROR_TEXT_CLASS}>
+              {errors.name.message}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2.5">
+          <label htmlFor="email" className={LABEL_CLASS}>
+            EMAIL ADDRESS <span aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            autoComplete="email"
+            inputMode="email"
+            placeholder="Where can I reach you?"
+            maxLength={254}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={INPUT_CLASS}
+            {...register("email", {
+              required: "Please enter your email address.",
+              pattern: {
+                value:
+                  /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i,
+                message: "Please enter a valid email address.",
+              },
+              maxLength: {
+                value: 254,
+                message: "Email must be 254 characters or fewer.",
+              },
+            })}
+          />
+          {errors.email && (
+            <p id="email-error" role="alert" className={ERROR_TEXT_CLASS}>
+              {errors.email.message}
+            </p>
+          )}
+        </div>
       </div>
-      <div className="flex flex-col gap-3 pb-5">
-        <label htmlFor="subject">Subject</label>
-        <input
-          type="text"
-          id="subject"
-          placeholder="Enter your subject"
-          className="w-full px-3 py-4 bg-foreground/5 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-focus-ring transition-all duration-300"
-          maxLength={150}
-          {...register("subject", {
-            required: "Please enter a subject.",
-            maxLength: { value: 150, message: "Subject must be 150 characters or fewer." },
-          })}
-        />
-        {errors.subject && <span className="text-red-500 py-1">{errors.subject.message}</span>}
+
+      {/* Row 2: What's This About? (Dropdown) */}
+      <div className="flex flex-col gap-2.5">
+        <label htmlFor="subject" className={LABEL_CLASS}>
+          WHAT&apos;S THIS ABOUT?
+        </label>
+        <div className="relative">
+          <select
+            id="subject"
+            aria-invalid={Boolean(errors.subject)}
+            aria-describedby={errors.subject ? "subject-error" : undefined}
+            className={`${INPUT_CLASS} appearance-none pr-10 cursor-pointer`}
+            {...register("subject", {
+              required: "Please select a topic.",
+            })}
+          >
+            {CONTACT_SUBJECT_OPTIONS.map((option) => (
+              <option
+                key={option}
+                value={option}
+                className="bg-background text-foreground"
+              >
+                {option}
+              </option>
+            ))}
+          </select>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-muted-foreground"
+          >
+            ▾
+          </span>
+        </div>
+        {errors.subject && (
+          <p id="subject-error" role="alert" className={ERROR_TEXT_CLASS}>
+            {errors.subject.message}
+          </p>
+        )}
       </div>
-      <div className="flex flex-col gap-3 pb-8">
-        <label htmlFor="message">Message</label>
+
+      {/* Row 3: Message */}
+      <div className="flex flex-col gap-2.5">
+        <label htmlFor="message" className={LABEL_CLASS}>
+          MESSAGE <span aria-hidden="true">*</span>
+        </label>
         <textarea
           id="message"
-          placeholder="Enter your message"
-          cols={30}
-          rows={10}
+          rows={6}
           maxLength={5000}
-          className="w-full px-3 py-4 bg-foreground/5 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-focus-ring transition-all duration-300"
+          placeholder="Tell me a bit about what's on your mind..."
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={errors.message ? "message-error" : undefined}
+          className={`${INPUT_CLASS} resize-y`}
           {...register("message", {
             required: "Please enter a message.",
-            maxLength: { value: 5000, message: "Message must be 5,000 characters or fewer." },
+            maxLength: {
+              value: 5000,
+              message: "Message must be 5,000 characters or fewer.",
+            },
           })}
         />
-        {errors.message && <span className="text-red-500 py-1">{errors.message.message}</span>}
+        {errors.message && (
+          <p id="message-error" role="alert" className={ERROR_TEXT_CLASS}>
+            {errors.message.message}
+          </p>
+        )}
       </div>
-      <button
-        type="submit"
-        className="w-full text-center bg-linear-to-r from-primary/10 via-primary/15 to-primary/20 border border-primary/20 px-5 py-4 rounded-xl cursor-pointer hover:bg-primary/20 transition-all duration-300"
-      >
-        Submit
-      </button>
+
+      {/* Submit Button */}
+      <div className="pt-2">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="group inline-flex items-center justify-center gap-3 rounded-full bg-foreground text-background px-8 py-4 font-sans text-xs font-semibold uppercase tracking-[0.18em] transition-opacity duration-200 hover:opacity-90 disabled:opacity-60 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+        >
+          <span>{isSubmitting ? "SENDING..." : "SEND MESSAGE"}</span>
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover:translate-x-1"
+          >
+            →
+          </span>
+        </button>
+      </div>
     </form>
   );
 }

@@ -1,4 +1,6 @@
 export interface IContactSectionProps {
-  heading?: string;
-  subline?: string;
+  eyebrow?: string | null;
+  heading?: string | null;
+  headingAccent?: string | null;
+  description?: string | null;
 }
