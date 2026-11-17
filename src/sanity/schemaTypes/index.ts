@@ -45,6 +45,7 @@ import { profile } from "../pages/profilePage";
 import { about } from "../pages/aboutPage";
 import { project } from "../pages/projectPage";
 import { blog } from "../pages/blogPage";
+import { contact } from "../pages/contactPage";
 // Miscellaneous
 import { blogTag } from "../miscellaneous/blogTag";
 import { techTag } from "../miscellaneous/techTag";
@@ -93,7 +94,13 @@ export const hoistedObjects: SchemaTypeDefinition[] = [
   heroSection,
 ];
 
-export const fixedPages: DocumentDefinition[] = [profile, about, project, blog];
+export const fixedPages: DocumentDefinition[] = [
+  profile,
+  about,
+  project,
+  blog,
+  contact,
+];
 
 export const miscellaneous = [blogTag, techTag];
 
