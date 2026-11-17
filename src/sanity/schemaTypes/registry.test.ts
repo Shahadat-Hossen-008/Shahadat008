@@ -20,6 +20,7 @@ describe("singleton registration", () => {
     "aboutPage",
     "projectPage",
     "blogPage",
+    "contactPage",
   ];
 
   it("registers siteSettings and layout exactly once in schema.types", () => {
@@ -63,6 +64,7 @@ describe("singletonDocumentActions", () => {
     "aboutPage",
     "projectPage",
     "blogPage",
+    "contactPage",
   ];
 
   it.each(singletonNames)("strips delete and duplicate for %s", (schemaType) => {
