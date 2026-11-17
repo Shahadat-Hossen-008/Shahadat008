@@ -1,27 +1,40 @@
+import { SectionHeading } from "@/components/section-heading";
+import { cleanText } from "@/sections/shared/section-formatting";
 import { ContactForm } from "./sub-components/form";
 import type { IContactSectionProps } from "./interface";
 
+const DEFAULT_DESCRIPTION =
+  "I’m open to conversations about frontend architecture, design systems, and product-focused engineering.";
+
 export function ContactSection({
-  heading = "Get in touch",
-  subline = "Want to discuss about your idea, or just want to say hi?",
+  eyebrow,
+  heading,
+  headingAccent,
+  description,
 }: IContactSectionProps) {
+  const cleanDescription = cleanText(description) || DEFAULT_DESCRIPTION;
+
   return (
-    <section id="contact" className="relative bg-background py-20 overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 opacity-20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/20 opacity-20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translatex-1/2 -translatey-1/2 w-96 h-96 bg-primary/10 opacity-30 rounded-full blur-3xl" />
-      </div>
-      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 py-4">
-        <div className="mx-auto w-full max-w-contact">
-          <h2 className="text-3xl md:text-5xl pb-6 text-center">{heading}</h2>
-          <p className="text-base text-foreground text-center pb-6">
-            {subline}
-          </p>
-          <div className="bg-foreground/5 border border-foreground/10 rounded-2xl p-6 sm:p-8">
-            <ContactForm />
-          </div>
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="bg-background text-foreground"
+    >
+      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 sm:pb-28 lg:pb-36">
+        <SectionHeading
+          as="h1"
+          id="contact-heading"
+          eyebrow={eyebrow || "GET IN TOUCH"}
+          heading={heading || "Let’s build something careful together."}
+          headingAccent={headingAccent ?? "careful together."}
+        />
+
+        <p className="mt-6 max-w-2xl font-sans text-lg sm:text-xl leading-relaxed text-muted-foreground text-pretty">
+          {cleanDescription}
+        </p>
+
+        <div className="mt-12 sm:mt-16 max-w-reading">
+          <ContactForm />
         </div>
       </div>
     </section>

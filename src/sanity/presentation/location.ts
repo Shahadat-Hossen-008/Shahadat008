@@ -9,6 +9,7 @@ export const previewLocations = {
   aboutPage:      defineLocations({ select: { title: "_type" }, resolve: () => fixedPage("About", "/about") }),
   projectPage:    defineLocations({ select: { title: "_type" }, resolve: () => fixedPage("Projects", "/projects") }),
   blogPage:       defineLocations({ select: { title: "_type" }, resolve: () => fixedPage("Blog", "/blogs") }),
+  contactPage:    defineLocations({ select: { title: "_type" }, resolve: () => fixedPage("Contact", "/contact") }),
   blogPost: defineLocations({
     select: { title: "blogTitle", slug: "slug.current" },
     resolve: (doc) =>{
