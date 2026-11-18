@@ -715,3 +715,225 @@
     overflow: hidden;
   }
 }
+
+/* ==========================================================================
+   Animated 404 & 500 Error Pages (Centralized Keyframes & Reduced Motion)
+   ========================================================================== */
+
+@layer components {
+  .error-watermark {
+    opacity: 0.03;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* 404 Arc Drawing static baseline */
+  .error-arc-path {
+    --arc-length: 415.42;
+    --arc-draw-duration: 3s;
+    stroke-dasharray: 415.42;
+    stroke-dashoffset: 0;
+  }
+
+  .error-arc-start-dot {
+    opacity: 1;
+    transform: none;
+  }
+
+  .error-arc-end-dot {
+    --arc-draw-duration: 3s;
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 1;
+  }
+
+  /* 500 Interrupted-Line static baseline */
+  .error-line-wrapper {
+    --line-primary-width: 7rem;
+    --line-stub-width: 1.75rem;
+    opacity: 1;
+  }
+
+  @media (min-width: 40rem) {
+    .error-line-wrapper {
+      --line-primary-width: 9rem;
+      --line-stub-width: 2.25rem;
+    }
+  }
+
+  .error-line-primary {
+    flex: none;
+    width: var(--line-primary-width);
+  }
+
+  .error-line-stub {
+    flex: none;
+    width: var(--line-stub-width);
+  }
+
+  .error-mint-pulse {
+    flex: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes error-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes error-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes error-watermark-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.03;
+  }
+}
+
+@keyframes error-arc-draw {
+  from {
+    stroke-dashoffset: 415.42;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes error-line-primary-grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--line-primary-width);
+  }
+}
+
+@keyframes error-line-stub-grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--line-stub-width);
+  }
+}
+
+@keyframes error-mint-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Shared watermark reveal (1.0s – 1.8s) */
+  .error-watermark {
+    opacity: 0;
+    animation: error-watermark-fade 0.8s ease 1s forwards;
+  }
+
+  /* 404 sequence */
+  .error-arc-path {
+    stroke-dasharray: 415.42;
+    stroke-dashoffset: 415.42;
+    animation: error-arc-draw var(--arc-draw-duration, 3s) ease 0s forwards;
+  }
+
+  .error-arc-start-dot {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .error-arc-end-dot {
+    opacity: 0;
+    transform: none;
+    animation: error-fade-in 0.2s ease-out var(--arc-draw-duration, 3s) forwards;
+  }
+
+  .error-404-content {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: error-fade-up 0.8s ease 0.5s forwards;
+  }
+
+  /* 500 sequence */
+  .error-line-wrapper {
+    opacity: 0;
+    animation: error-fade-in 0.8s ease 0s forwards;
+  }
+
+  .error-line-primary {
+    width: 0;
+    animation: error-line-primary-grow 2s ease 0s forwards;
+  }
+
+  .error-line-stub {
+    width: 0;
+    animation: error-line-stub-grow 2s ease 0s forwards;
+  }
+
+  .error-500-content {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: error-fade-up 0.8s ease 0.3s forwards;
+  }
+
+  .error-mint-pulse {
+    animation: error-mint-pulse 2s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error-watermark {
+    animation: none !important;
+    opacity: 0.03 !important;
+  }
+
+  .error-arc-path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .error-arc-start-dot,
+  .error-arc-end-dot,
+  .error-404-content,
+  .error-500-content,
+  .error-line-wrapper,
+  .error-mint-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .error-line-primary {
+    animation: none !important;
+    width: var(--line-primary-width) !important;
+  }
+
+  .error-line-stub {
+    animation: none !important;
+    width: var(--line-stub-width) !important;
+  }
+}
