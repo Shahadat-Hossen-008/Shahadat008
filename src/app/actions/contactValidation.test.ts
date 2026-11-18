@@ -65,11 +65,11 @@ describe("validateContactSubmission", () => {
 
   it("detects honeypot and sub-800ms bot payloads using same-clock elapsedMs", () => {
     expect(
-      isBotSubmission({ ...validSubmission, website: "https://bot.example" }),
+      isBotSubmission({ ...validSubmission, _gotcha: "https://bot.example" }),
     ).toBe(true);
     expect(isBotSubmission({ ...validSubmission, elapsedMs: 250 })).toBe(true);
     expect(
-      isBotSubmission({ ...validSubmission, website: "", elapsedMs: 1200 }),
+      isBotSubmission({ ...validSubmission, _gotcha: "", elapsedMs: 1200 }),
     ).toBe(false);
   });
 });
