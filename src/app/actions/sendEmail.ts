@@ -84,12 +84,19 @@ function isDuplicateSubmission(
 }
 
 function isRateLimited(ip: string, now = Date.now()): boolean {
-  const recent = (submissionTimestampsByIp.get(ip) ?? []).filter(
-    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS,
-  );
+  for (const [key, timestamps] of submissionTimestampsByIp.entries()) {
+    const valid = timestamps.filter(
+      (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS,
+    );
+    if (valid.length === 0) {
+      submissionTimestampsByIp.delete(key);
+    } else {
+      submissionTimestampsByIp.set(key, valid);
+    }
+  }
 
+  const recent = submissionTimestampsByIp.get(ip) ?? [];
   if (recent.length >= MAX_REQUESTS_PER_WINDOW) {
-    submissionTimestampsByIp.set(ip, recent);
     return true;
   }
 
@@ -153,6 +160,9 @@ export async function sendMail(formData: unknown) {
     console.error("Contact form email delivery failed", {
       code: getSafeErrorCode(error),
     });
-    return { success: false, error: "Failed to send email" };
+    return {
+      success: false,
+      error: "Unable to send message right now. Please try again shortly.",
+    };
   }
 }

@@ -12,8 +12,8 @@ export interface FormSubmitData {
   email: string;
   subject: ContactSubjectOption;
   message: string;
-  /** Hidden honeypot field — must stay empty for human submissions. */
-  website?: string;
+  /** Hidden non-vCard honeypot field — must stay empty for human submissions. */
+  _gotcha?: string;
   /** Client mount timestamp (`Date.now()`) used to compute same-clock fill duration. */
   renderedAt?: number;
   /** Client-computed fill duration (`Date.now() - renderedAt`) immune to server clock skew. */

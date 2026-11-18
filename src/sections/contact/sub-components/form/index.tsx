@@ -4,6 +4,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
+import {
+  countMessageLinks,
+  EMAIL_PATTERN,
+  MAX_MESSAGE_LINKS,
+} from "@/app/actions/contactValidation";
 import { sendMail } from "@/app/actions/sendEmail";
 import {
   CONTACT_SUBJECT_OPTIONS,
@@ -36,7 +41,7 @@ export function ContactForm() {
       email: "",
       subject: "Project Inquiry",
       message: "",
-      website: "",
+      _gotcha: "",
       renderedAt: 0,
     },
   });
@@ -61,7 +66,7 @@ export function ContactForm() {
         email: "",
         subject: "Project Inquiry",
         message: "",
-        website: "",
+        _gotcha: "",
         renderedAt: data.renderedAt,
       });
     } else {
@@ -78,15 +83,18 @@ export function ContactForm() {
       noValidate
       className="flex flex-col gap-7 sm:gap-8"
     >
-      {/* Hidden Honeypot Trap for Automated Spam Bots */}
+      {/* Non-vCard Honeypot Trap (ignored by browser autofill & password managers) */}
       <div aria-hidden="true" className="sr-only">
-        <label htmlFor="website">Website</label>
+        <label htmlFor="_gotcha">Do not fill this field</label>
         <input
           type="text"
-          id="website"
+          id="_gotcha"
           tabIndex={-1}
-          autoComplete="off"
-          {...register("website")}
+          autoComplete="new-password"
+          data-1p-ignore="true"
+          data-lpignore="true"
+          data-form-type="other"
+          {...register("_gotcha")}
         />
       </div>
 
@@ -102,6 +110,7 @@ export function ContactForm() {
             autoComplete="name"
             placeholder="What should I call you?"
             maxLength={100}
+            aria-required="true"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "name-error" : undefined}
             className={INPUT_CLASS}
@@ -111,10 +120,12 @@ export function ContactForm() {
                 value: 100,
                 message: "Name must be 100 characters or fewer.",
               },
+              validate: (value) =>
+                value.trim().length > 0 || "Please enter your name.",
             })}
           />
           {errors.name && (
-            <p id="name-error" role="alert" className={ERROR_TEXT_CLASS}>
+            <p id="name-error" className={ERROR_TEXT_CLASS}>
               {errors.name.message}
             </p>
           )}
@@ -131,14 +142,14 @@ export function ContactForm() {
             inputMode="email"
             placeholder="Where can I reach you?"
             maxLength={254}
+            aria-required="true"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
             className={INPUT_CLASS}
             {...register("email", {
               required: "Please enter your email address.",
               pattern: {
-                value:
-                  /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i,
+                value: EMAIL_PATTERN,
                 message: "Please enter a valid email address.",
               },
               maxLength: {
@@ -148,7 +159,7 @@ export function ContactForm() {
             })}
           />
           {errors.email && (
-            <p id="email-error" role="alert" className={ERROR_TEXT_CLASS}>
+            <p id="email-error" className={ERROR_TEXT_CLASS}>
               {errors.email.message}
             </p>
           )}
@@ -188,7 +199,7 @@ export function ContactForm() {
           </span>
         </div>
         {errors.subject && (
-          <p id="subject-error" role="alert" className={ERROR_TEXT_CLASS}>
+          <p id="subject-error" className={ERROR_TEXT_CLASS}>
             {errors.subject.message}
           </p>
         )}
@@ -204,6 +215,7 @@ export function ContactForm() {
           rows={6}
           maxLength={5000}
           placeholder="Tell me a bit about what's on your mind..."
+          aria-required="true"
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
           className={`${INPUT_CLASS} resize-y`}
@@ -213,10 +225,17 @@ export function ContactForm() {
               value: 5000,
               message: "Message must be 5,000 characters or fewer.",
             },
+            validate: {
+              notEmpty: (value) =>
+                value.trim().length > 0 || "Please enter a message.",
+              maxLinks: (value) =>
+                countMessageLinks(value) <= MAX_MESSAGE_LINKS ||
+                `Please include ${MAX_MESSAGE_LINKS} or fewer links in your message.`,
+            },
           })}
         />
         {errors.message && (
-          <p id="message-error" role="alert" className={ERROR_TEXT_CLASS}>
+          <p id="message-error" className={ERROR_TEXT_CLASS}>
             {errors.message.message}
           </p>
         )}
