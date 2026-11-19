@@ -110,7 +110,6 @@ describe("About-page section schemas", () => {
     expect(sectionsGroup?.title).toBe("Content");
     expect(sectionsGroup?.of).toEqual([
       "richTextSection",
-      "technologyCarousel",
       "technologySection",
       "ctaSection",
     ]);
