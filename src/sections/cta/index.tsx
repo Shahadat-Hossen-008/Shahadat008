@@ -18,7 +18,7 @@ export function CtaSection({
         <section
           data-surface="forest"
           aria-labelledby="cta-heading"
-          className={`cta-band mt-20 lg:mt-28 w-full p-8 sm:p-12 lg:p-16 rounded-panel text-foreground ${
+          className={`cta-band mt-8 sm:mt-10 lg:mt-12 w-full p-8 sm:p-12 lg:p-16 rounded-panel text-foreground ${
             hasRightColumn
               ? "grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center"
               : "flex flex-col items-start gap-6 sm:gap-8"
