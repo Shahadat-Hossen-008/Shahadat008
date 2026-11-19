@@ -252,6 +252,9 @@ describe("Editorial Portable Text components", () => {
     expect(html).toContain("Outcomes");
     expect(html).toContain("Walk-in ready");
     expect(html).toContain("Purchase without creating an account");
+    expect(html).toContain(
+      "grid-cols-[repeat(auto-fit,minmax(min(10rem,100%),1fr))]",
+    );
     expect(html).toContain("gap-px border border-border bg-border");
 
     // Portable Table
@@ -447,5 +450,91 @@ describe("Editorial Portable Text components", () => {
     expect(html).not.toContain("bento:col-span-2");
     expect(html).toContain('data-editorial-blockquote="true"');
     expect(html).toContain('data-editorial-code="true"');
+  });
+
+  it("applies wrap-anywhere to Portable Text prose, links, lists, headings, and blockquotes without affecting code blocks", () => {
+    const longUrl =
+      "https://example.com/api/v2/very-long-endpoint-name-that-should-wrap-safely-on-mobile";
+    const value = [
+      {
+        _type: "block",
+        _key: "h2-1",
+        style: "h2",
+        markDefs: [],
+        children: [
+          {
+            _type: "span",
+            _key: "s-h2",
+            text: "VeryLongUnbrokenTechnicalIdentifierHeading",
+            marks: [],
+          },
+        ],
+      },
+      {
+        _type: "block",
+        _key: "p-1",
+        style: "normal",
+        markDefs: [
+          {
+            _key: "link-1",
+            _type: "linkUrl",
+            type: "external",
+            url: longUrl,
+            openInNewTab: true,
+          },
+        ],
+        children: [
+          { _type: "span", _key: "s1", text: "Endpoint: ", marks: [] },
+          { _type: "span", _key: "s2", text: longUrl, marks: ["link-1"] },
+        ],
+      },
+      {
+        _type: "block",
+        _key: "li-bullet",
+        style: "normal",
+        listItem: "bullet",
+        level: 1,
+        markDefs: [],
+        children: [{ _type: "span", _key: "s3", text: longUrl, marks: [] }],
+      },
+      {
+        _type: "block",
+        _key: "li-number",
+        style: "normal",
+        listItem: "number",
+        level: 1,
+        markDefs: [],
+        children: [{ _type: "span", _key: "s4", text: longUrl, marks: [] }],
+      },
+      {
+        _type: "block",
+        _key: "bq-1",
+        style: "blockquote",
+        markDefs: [],
+        children: [{ _type: "span", _key: "s5", text: longUrl, marks: [] }],
+      },
+      {
+        _type: "code",
+        _key: "code-1",
+        language: "typescript",
+        code: `const endpoint = "${longUrl}";`,
+      },
+    ];
+
+    const html = renderToStaticMarkup(
+      <CustomPortableText value={value as never} />,
+    );
+
+    expect(html).toMatch(/<h2[^>]*wrap-anywhere[^>]*>/);
+    expect(html).toMatch(/<p[^>]*wrap-anywhere[^>]*>/);
+    expect(html).toMatch(/<a[^>]*wrap-anywhere[^>]*>/);
+    expect(html).toMatch(/<ul[^>]*wrap-anywhere[^>]*>/);
+    expect(html).toMatch(/<ol[^>]*wrap-anywhere[^>]*>/);
+    expect(html).toMatch(/<blockquote[^>]*wrap-anywhere[^>]*>/);
+
+    const preTag = html.match(/<pre[^>]*>/)?.[0] ?? "";
+    expect(preTag).toContain("overflow-x-auto");
+    expect(preTag).toContain("whitespace-pre");
+    expect(preTag).not.toContain("wrap-anywhere");
   });
 });

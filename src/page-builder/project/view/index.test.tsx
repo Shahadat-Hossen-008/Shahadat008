@@ -16,7 +16,7 @@ const emptyImage = {
   imageFile: null,
   altText: "",
   isClickable: null,
-  linkUrl: null,
+  link: null,
 };
 
 const mockProjects: SanityProjectItems = [

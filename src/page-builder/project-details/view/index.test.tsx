@@ -25,7 +25,7 @@ const mockProjectWithClient: ProjectDetailsData = {
     imageFile: null,
     altText: "",
     isClickable: null,
-    linkUrl: null,
+    link: null,
   },
   stack: [
     { _id: "t1", label: "Next.js" },
