@@ -74,10 +74,11 @@ export function Header({
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Lock background scrolling and handle Escape while the mobile drawer is open
+  // Lock background scrolling, handle Escape, and contain Tab focus while the mobile drawer is open
   useEffect(() => {
     if (!isMenuOpen) {
       return;
@@ -90,6 +91,34 @@ export function Header({
       if (event.key === "Escape") {
         setIsMenuOpen(false);
         toggleButtonRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const panel = drawerPanelRef.current;
+      if (!panel || !panel.contains(document.activeElement)) {
+        return;
+      }
+
+      const links = panel.querySelectorAll<HTMLAnchorElement>("a[href]");
+      if (links.length === 0) {
+        return;
+      }
+
+      const firstLink = links[0];
+      const lastLink = links[links.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === firstLink) {
+          event.preventDefault();
+          lastLink?.focus();
+        }
+      } else if (document.activeElement === lastLink) {
+        event.preventDefault();
+        firstLink?.focus();
       }
     }
 
@@ -237,6 +266,7 @@ export function Header({
 
         {/* Complete Navigation Drawer Container: Slides as one unit from translateX(100%) to translateX(0) */}
         <aside
+          ref={drawerPanelRef}
           id="mobile-navigation-panel"
           data-testid="mobile-navigation-panel"
           data-open={isMenuOpen ? "true" : "false"}
