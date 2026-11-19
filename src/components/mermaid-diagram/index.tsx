@@ -51,7 +51,10 @@ export function MermaidDiagram({ code, caption }: IMermaidDiagramProps) {
           </figcaption>
           <button
             type="button"
-            onClick={() => setIsFullscreen(true)}
+            onClick={(e) => {
+              e.currentTarget.focus();
+              setIsFullscreen(true);
+            }}
             className="inline-flex items-center gap-1.5 font-mono text-label uppercase text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
           >
             <span>Inspect</span>
@@ -62,7 +65,10 @@ export function MermaidDiagram({ code, caption }: IMermaidDiagramProps) {
 
         <div
           className="flex min-h-40 cursor-pointer items-center justify-center p-6"
-          onClick={() => setIsFullscreen(true)}
+          onClick={(e) => {
+            e.currentTarget.focus();
+            setIsFullscreen(true);
+          }}
           role="button"
           tabIndex={0}
           aria-label={
