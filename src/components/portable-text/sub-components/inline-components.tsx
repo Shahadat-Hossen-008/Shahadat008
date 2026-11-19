@@ -61,22 +61,22 @@ export const editorialBlockComponents: NonNullable<
   IPortableTextComponents["block"]
 > = {
   h1: ({ children }) => (
-    <h2 className="w-full font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight leading-[1.15] text-balance text-foreground mt-10 mb-4">
+    <h2 className="w-full wrap-anywhere font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight leading-[1.15] text-balance text-foreground mt-10 mb-4">
       {children}
     </h2>
   ),
   h2: ({ children }) => (
-    <h2 className="w-full font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-8 mb-3">
+    <h2 className="w-full wrap-anywhere font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-8 mb-3">
       {children}
     </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="w-full font-display text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight leading-tight text-balance text-foreground mt-6 mb-2.5">
+    <h3 className="w-full wrap-anywhere font-display text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight leading-tight text-balance text-foreground mt-6 mb-2.5">
       {children}
     </h3>
   ),
   normal: ({ children }) => (
-    <p className="font-sans text-base leading-[1.68] text-muted-foreground mb-4 last:mb-0 text-pretty">
+    <p className="wrap-anywhere font-sans text-base leading-[1.68] text-muted-foreground mb-4 last:mb-0 text-pretty">
       {children}
     </p>
   ),
@@ -123,7 +123,7 @@ export const editorialMarkComponents: NonNullable<
         href={href}
         target={openInNewTab ? "_blank" : undefined}
         rel={openInNewTab ? "noopener noreferrer" : undefined}
-        className="link-hover-underline font-medium text-foreground transition-opacity hover:opacity-85"
+        className="link-hover-underline wrap-anywhere font-medium text-foreground transition-opacity hover:opacity-85"
       >
         {children}
       </a>
@@ -138,12 +138,12 @@ export const editorialListComponents: NonNullable<
   IPortableTextComponents["list"]
 > = {
   bullet: ({ children }) => (
-    <ul className="my-4 w-full list-disc space-y-2 pl-5 font-sans text-base leading-[1.68] text-muted-foreground marker:text-foreground">
+    <ul className="my-4 w-full list-disc space-y-2 pl-5 font-sans text-base leading-[1.68] text-muted-foreground marker:text-foreground wrap-anywhere">
       {children}
     </ul>
   ),
   number: ({ children }) => (
-    <ol className="my-4 w-full list-decimal space-y-2 pl-5 font-sans text-base leading-[1.68] text-muted-foreground marker:text-foreground">
+    <ol className="my-4 w-full list-decimal space-y-2 pl-5 font-sans text-base leading-[1.68] text-muted-foreground marker:text-foreground wrap-anywhere">
       {children}
     </ol>
   ),
@@ -161,12 +161,12 @@ export const inlinePortableTextComponents: IPortableTextComponents = {
   block: {
     ...editorialBlockComponents,
     h1: ({ children }) => (
-      <h3 className="w-full font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-6 mb-3">
+      <h3 className="w-full wrap-anywhere font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-6 mb-3">
         {children}
       </h3>
     ),
     h2: ({ children }) => (
-      <h3 className="w-full font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-6 mb-3">
+      <h3 className="w-full wrap-anywhere font-display text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.2] text-balance text-foreground mt-6 mb-3">
         {children}
       </h3>
     ),
