@@ -50,5 +50,8 @@ describe("HomePage", () => {
     const html = renderToStaticMarkup(PageComponent);
 
     expect(html).toContain("Building thoughtful web experiences");
+    expect(html).toContain(
+      "mx-auto w-full max-w-page px-4 pt-12 pb-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20 lg:pb-16",
+    );
   });
 });
