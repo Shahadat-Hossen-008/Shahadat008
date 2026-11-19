@@ -37,7 +37,7 @@ export function PrimaryHero({
                   aria-hidden="true"
                   className="relative flex size-2.5 shrink-0 items-center justify-center"
                 >
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-status-active/30 duration-1000" />
+                  <span className="absolute inline-flex size-full animate-ping motion-reduce:animate-none rounded-full bg-status-active/30 duration-1000" />
                   <span className="relative inline-flex size-2 rounded-full bg-status-active" />
                 </span>
                 <span>
