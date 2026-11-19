@@ -182,7 +182,7 @@ describe("buildMetadata", () => {
     expect(meta.openGraph?.title).toBe("OG About");
   });
 
-  it("falls back to the logo for the OG image when no default is set", () => {
+  it("falls back to the logo for the OG image and uses uncropped fit=max for the favicon without rect cropping", () => {
     const meta = buildMetadata({
       layout,
       siteSettings,
@@ -191,6 +191,8 @@ describe("buildMetadata", () => {
 
     expect(meta.openGraph?.images).toHaveLength(1);
     expect(JSON.stringify(meta.openGraph?.images)).toContain("cdn.sanity.io");
+    expect(JSON.stringify(meta.icons)).toContain("w=128&fit=max");
+    expect(JSON.stringify(meta.icons)).not.toContain("rect=");
   });
 
   it("ORs robots flags so a site-wide noindex cannot be undone", () => {

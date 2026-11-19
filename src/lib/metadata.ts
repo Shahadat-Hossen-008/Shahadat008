@@ -106,7 +106,11 @@ function faviconUrl(
   if (!image?.asset) return null;
 
   try {
-    return urlFor(image.asset as never).width(64).height(64).url();
+    return urlFor(image.asset as never)
+      .width(128)
+      .fit("max")
+      .auto("format")
+      .url();
   } catch {
     return null;
   }
@@ -152,7 +156,8 @@ export function buildMetadata({
 
   const canonical = pageSeo?.canonicalUrl?.trim() || absoluteUrl(path);
 
-  const icons = faviconUrl(identity?.favicon) ?? imageUrl(identity?.logo);
+  const icons =
+    faviconUrl(identity?.favicon) ?? faviconUrl(identity?.logo?.imageFile);
 
   const origin = getSiteOrigin();
 
