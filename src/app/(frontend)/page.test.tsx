@@ -11,22 +11,18 @@ vi.mock("@/sanity/lib/live", () => ({
 import { sanityFetch } from "@/sanity/lib/live";
 
 const sampleProfileData: PROFILE_QUERYResult = {
-  _id: "myProfilePage",
-  _type: "myProfilePage",
   fullName: "Shahadat Hossen",
-  roleTitle: "Frontend Engineer",
-  location: "Remote",
   hero: {
-    headline: "Building thoughtful web experiences",
-    headlineAccent: null,
-    subheadline: "Specializing in React, TypeScript, and Design Systems.",
     statusLabel: "Available",
     location: "Remote",
-    statusIndicator: true,
-    socialLinks: null,
+    headline: "Building thoughtful web experiences",
+    headlineAccent: null,
+    subline: "Specializing in React, TypeScript, and Design Systems.",
     primaryCta: null,
     secondaryCta: null,
-    scrollIndicatorText: null,
+    portrait: null,
+    nowBuilding: null,
+    facts: null,
   },
   sections: [],
   seo: {

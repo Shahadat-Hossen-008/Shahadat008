@@ -5,6 +5,19 @@ import { describe, expect, it } from "vitest";
 import type { NonNullableExperienceSection } from "./interface";
 import { ExperienceSectionBuilder } from "./index";
 
+const emptyRoleDefaults = {
+  startDate: "2020-01-01",
+  endDate: null,
+  current: null,
+  description: null,
+  contribution: null,
+  impact: null,
+  featured: null,
+  outcome: null,
+  project: null,
+  tools: null,
+};
+
 const base: NonNullableExperienceSection = {
   _id: "exp-1",
   _type: "experienceSection",
@@ -12,6 +25,7 @@ const base: NonNullableExperienceSection = {
   intro: "A summary of past engineering roles.",
   roles: [
     {
+      ...emptyRoleDefaults,
       _key: "r1",
       role: "Senior Frontend Engineer",
       company: "Acme Corp",
@@ -22,6 +36,7 @@ const base: NonNullableExperienceSection = {
       tools: [{ _id: "t1", label: "Next.js" }],
     },
     {
+      ...emptyRoleDefaults,
       _key: "r2",
       role: "Frontend Developer",
       company: "Beta Studio",
@@ -32,6 +47,7 @@ const base: NonNullableExperienceSection = {
       tools: [{ _id: "t2", label: "React" }],
     },
     {
+      ...emptyRoleDefaults,
       _key: "r-skip",
       role: "",
       company: "No Role Corp",
@@ -58,7 +74,11 @@ describe("ExperienceSectionBuilder", () => {
 
   it("returns null when roles array has no valid roles", () => {
     expect(render({ roles: [] })).toBe("");
-    expect(render({ roles: [{ _key: "x", role: "", company: "" }] })).toBe("");
+    expect(
+      render({
+        roles: [{ ...emptyRoleDefaults, _key: "x", role: "", company: "" }],
+      }),
+    ).toBe("");
   });
 
   it("formats periods: Jan 2024 — Present for current, Jun 2022 — Dec 2023 for past", () => {
@@ -76,6 +96,7 @@ describe("ExperienceSectionBuilder", () => {
 
   it("caps at max 5 roles", () => {
     const sixRoles = Array.from({ length: 6 }, (_, i) => ({
+      ...emptyRoleDefaults,
       _key: `role-${i}`,
       role: `Role ${i}`,
       company: `Company ${i}`,
@@ -112,6 +133,7 @@ describe("ExperienceSectionBuilder", () => {
         contribution: "Architected distributed caching and edge routing.",
         impact: "Cut p99 latency by 45% across 200k daily requests.",
         featured: true,
+        outcome: null,
         project: {
           _id: "p1",
           title: "Platform Modernization",
@@ -139,6 +161,7 @@ describe("ExperienceSectionBuilder", () => {
   it("gracefully falls back to outcome when impact and contribution are absent", () => {
     const fallbackRole = [
       {
+        ...emptyRoleDefaults,
         _key: "r-legacy",
         role: "Frontend Engineer",
         company: "Legacy Labs",

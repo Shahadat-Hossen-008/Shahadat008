@@ -15,11 +15,13 @@ describe("cleanColumns", () => {
         _key: "c2",
         label: "   ",
         statement: "No label",
+        items: null,
       },
       {
         _key: "c3",
         label: "Label without statement",
         statement: "  ",
+        items: null,
       },
     ]);
 

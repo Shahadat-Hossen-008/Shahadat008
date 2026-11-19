@@ -68,8 +68,12 @@ describe("AboutIntroSectionBuilder", () => {
               },
             },
           },
+          crop: null,
+          hotspot: null,
         },
         altText: "Custom author portrait",
+        isClickable: null,
+        link: null,
       },
     });
 

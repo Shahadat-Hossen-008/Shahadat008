@@ -7,6 +7,7 @@ import { SectionBuilder } from "./index";
 const pillar = (id: string, statement: string): ISanitySectionBlock => ({
   _id: id,
   _type: "engineeringPillars",
+  title: null,
   columns: [
     {
       _key: `col-${id}`,
@@ -17,19 +18,17 @@ const pillar = (id: string, statement: string): ISanitySectionBlock => ({
   ],
 });
 
-const emptyCuriosity = {
-  _id: "cur",
-  _type: "curiositySection",
-  eyebrow: "Curious",
+const emptyPersonalIntro: ISanitySectionBlock = {
+  _id: "intro",
+  _type: "personalIntroSection",
   heading: "Curious heading",
-  headingAccent: null,
-  intro: null,
-  stack: null,
-  learning: null,
-  passion: null,
-  interests: null,
+  capabilities: null,
+  personalIntro: null,
   work: null,
-} as ISanitySectionBlock;
+  learning: null,
+  beyondCode: null,
+  availability: null,
+};
 
 describe("SectionBuilder", () => {
   it("renders nothing without sections", () => {
@@ -47,7 +46,12 @@ describe("SectionBuilder", () => {
   it("safely skips null, undefined, or malformed sections without throwing", () => {
     const html = renderToStaticMarkup(
       <SectionBuilder
-        sections={[null, undefined, {} as never, pillar("a", "Survives")]}
+        sections={[
+          null,
+          undefined as never,
+          {} as never,
+          pillar("a", "Survives"),
+        ]}
       />,
     );
 
@@ -56,7 +60,7 @@ describe("SectionBuilder", () => {
 
   it("does not let an empty section render", () => {
     const html = renderToStaticMarkup(
-      <SectionBuilder sections={[emptyCuriosity, pillar("a", "Only")]} />,
+      <SectionBuilder sections={[emptyPersonalIntro, pillar("a", "Only")]} />,
     );
 
     expect(html).not.toContain("Curious heading");
@@ -94,7 +98,7 @@ describe("SectionBuilder", () => {
           {
             _key: "c1",
             title: "FRONTEND",
-            skills: ["React"],
+            skills: [{ _key: "s1", label: "React", context: null }],
           },
         ],
       },
@@ -111,7 +115,12 @@ describe("SectionBuilder", () => {
             startDate: "2024-01-01",
             endDate: null,
             current: true,
+            description: null,
+            contribution: null,
+            impact: null,
+            featured: null,
             outcome: null,
+            project: null,
             tools: null,
           },
         ],

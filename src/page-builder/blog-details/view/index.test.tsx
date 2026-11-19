@@ -24,6 +24,7 @@ const mockBlogPost: BlogDetailsData = {
     {
       _key: "p1",
       _type: "block",
+      markDefs: null,
       children: [
         {
           _key: "s1",
