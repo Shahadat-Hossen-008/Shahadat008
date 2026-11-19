@@ -24,10 +24,6 @@ export type SiteSocialLink = NonNullable<
   NonNullable<SiteIdentity>["socialLinks"]
 >[number];
 
-export type FooterColumn = NonNullable<
-  NonNullable<SiteFooter>["columns"]
->[number];
-
 export interface ILayoutBuilderProps {
   children: ReactNode;
   layout: Layout;
