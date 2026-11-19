@@ -20,7 +20,7 @@ export function OutcomeStateBlock({ heading, stats }: IOutcomeStateProps) {
           {heading.trim()}
         </h3>
       )}
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-px border border-border bg-border">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(10rem,100%),1fr))] gap-px border border-border bg-border">
         {validStats.map((stat, index) => (
           <div
             key={stat._key || index}
