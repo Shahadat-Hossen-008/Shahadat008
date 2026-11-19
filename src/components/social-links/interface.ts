@@ -9,6 +9,6 @@ export type SiteSocialLink = NonNullable<
 export interface ISocialLinksProps {
   links: SiteSocialLink[] | null | undefined;
   className?: string;
-  /** `icon` renders a compact icon row; `label` renders the text next to it. */
-  variant?: "icon" | "label";
+  /** `icon` renders a compact icon row; `label` renders the text next to it; `circle` renders circular bordered icon buttons. */
+  variant?: "icon" | "label" | "circle";
 }
