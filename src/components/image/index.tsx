@@ -46,7 +46,7 @@ export function SanityImage({
           .width(width)
           .height(height)
           .url()}
-        alt={`portfolio of ${alt}`}
+        alt={alt ?? ""}
         width={width}
         height={height}
         className={className}

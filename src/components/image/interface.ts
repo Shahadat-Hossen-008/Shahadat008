@@ -10,6 +10,6 @@ export interface ISanityImageProps {
   image: SanityImageSource;
   width?: number | null;
   height?: number | null;
-  alt?: string;
+  alt?: string | null;
   className?: string;
 }
