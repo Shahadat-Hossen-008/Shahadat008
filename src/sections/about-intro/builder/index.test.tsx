@@ -68,12 +68,16 @@ describe("AboutIntroSectionBuilder", () => {
               },
             },
           },
+          crop: null,
+          hotspot: null,
         },
         altText: "Custom author portrait",
+        isClickable: null,
+        link: null,
       },
     });
 
-    expect(html).toContain('alt="portfolio of Custom author portrait"');
+    expect(html).toContain('alt="Custom author portrait"');
     expect(html).toContain("rounded-2xl");
   });
 

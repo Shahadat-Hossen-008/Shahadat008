@@ -29,7 +29,6 @@ export const pageSection = defineType({
     sectionRef("ctaSection", "Call to action"),
     sectionRef("richTextSection", "Rich Text"),
     sectionRef("technologySection", "Technology"),
-    sectionRef("technologyCarousel", "Carousel Technology"),
   ],
   options: {
     insertMenu: {
@@ -53,7 +52,6 @@ export const pageSection = defineType({
           title: "Content",
           of: [
             "richTextSection",
-            "technologyCarousel",
             "technologySection",
             "ctaSection",
           ],

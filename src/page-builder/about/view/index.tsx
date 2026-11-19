@@ -4,10 +4,10 @@ import type { IAboutPageBuilderProps } from "./interface";
 
 export function AboutPageBuilder({ page }: IAboutPageBuilderProps) {
   return (
-    <main className="pt-8 pb-28">
+    <div className="pt-8 pb-28">
       {page.aboutIntro && <AboutIntroSectionBuilder data={page.aboutIntro} />}
       <SectionBuilder sections={page.sections} />
-    </main>
+    </div>
   );
 }
 

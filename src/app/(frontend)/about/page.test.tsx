@@ -45,7 +45,10 @@ const sampleAboutData: ABOUT_PAGE_QUERYResult = {
         {
           _key: "c1",
           title: "FRONTEND",
-          skills: ["Figma", "React"],
+          skills: [
+            { _key: "s1", label: "Figma", context: null },
+            { _key: "s2", label: "React", context: null },
+          ],
         },
       ],
     },
@@ -62,7 +65,12 @@ const sampleAboutData: ABOUT_PAGE_QUERYResult = {
           startDate: "2024-01-01",
           endDate: null,
           current: true,
+          description: null,
+          contribution: null,
+          impact: null,
+          featured: null,
           outcome: "Outcome",
+          project: null,
           tools: [{ _id: "t2", label: "React" }],
         },
       ],
@@ -107,5 +115,7 @@ describe("AboutPage", () => {
     // Numbered headings should NOT appear on the About page
     expect(html).not.toContain("02 —");
     expect(html).not.toContain("03 —");
+    // Page builder must not emit a nested <main> landmark inside LayoutBuilder's <main>
+    expect(html).not.toContain("<main");
   });
 });

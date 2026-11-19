@@ -92,7 +92,6 @@ describe("structure()", () => {
       "ctaSection",
       "richTextSection",
       "technologySection",
-      "technologyCarousel",
     ]);
   });
 

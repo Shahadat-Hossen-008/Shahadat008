@@ -11,22 +11,18 @@ vi.mock("@/sanity/lib/live", () => ({
 import { sanityFetch } from "@/sanity/lib/live";
 
 const sampleProfileData: PROFILE_QUERYResult = {
-  _id: "myProfilePage",
-  _type: "myProfilePage",
   fullName: "Shahadat Hossen",
-  roleTitle: "Frontend Engineer",
-  location: "Remote",
   hero: {
-    headline: "Building thoughtful web experiences",
-    headlineAccent: null,
-    subheadline: "Specializing in React, TypeScript, and Design Systems.",
     statusLabel: "Available",
     location: "Remote",
-    statusIndicator: true,
-    socialLinks: null,
+    headline: "Building thoughtful web experiences",
+    headlineAccent: null,
+    subline: "Specializing in React, TypeScript, and Design Systems.",
     primaryCta: null,
     secondaryCta: null,
-    scrollIndicatorText: null,
+    portrait: null,
+    nowBuilding: null,
+    facts: null,
   },
   sections: [],
   seo: {
@@ -50,5 +46,8 @@ describe("HomePage", () => {
     const html = renderToStaticMarkup(PageComponent);
 
     expect(html).toContain("Building thoughtful web experiences");
+    expect(html).toContain(
+      "mx-auto w-full max-w-page px-4 pt-12 pb-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20 lg:pb-16",
+    );
   });
 });

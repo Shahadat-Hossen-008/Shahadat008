@@ -16,7 +16,7 @@ const emptyImage = {
   imageFile: null,
   altText: "",
   isClickable: null,
-  linkUrl: null,
+  link: null,
 };
 
 const mockProjects: SanityProjectItems = [
@@ -201,11 +201,12 @@ describe("ProjectPageBuilder & Project Helpers", () => {
     expect(html).toContain("Portable Text description fallback.");
   });
 
-  it("omits ProjectsSection when projects array is empty", () => {
+  it("omits ProjectsSection when projects array is empty and renders a non-main div wrapper", () => {
     const html = renderToStaticMarkup(
       <ProjectPageBuilder page={{ ...mockPage, projects: [] }} />,
     );
-    expect(html).toBe('<main class="pt-8 pb-28"></main>');
+    expect(html).toBe('<div class="pt-8 pb-28"></div>');
+    expect(html).not.toContain("<main");
   });
 
   it("keeps ProjectPageBuilder as a thin Server Component and ProjectsSection without direct Sanity query type imports", () => {

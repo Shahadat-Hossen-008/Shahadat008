@@ -28,7 +28,7 @@ export function PrimaryHero({
       aria-labelledby="hero-heading"
       className="relative flex min-h-[85svh] flex-col justify-between overflow-hidden bg-background"
     >
-      <div className="mx-auto w-full max-w-page px-4 pt-28 pb-12 sm:px-6 lg:px-8 lg:pt-36 lg:pb-16">
+      <div className="mx-auto w-full max-w-page px-4 pt-12 pb-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20 lg:pb-16">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14">
           <div className="flex flex-col gap-6 sm:gap-7">
             {showEyebrow && (
@@ -37,7 +37,7 @@ export function PrimaryHero({
                   aria-hidden="true"
                   className="relative flex size-2.5 shrink-0 items-center justify-center"
                 >
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-status-active/30 duration-1000" />
+                  <span className="absolute inline-flex size-full animate-ping motion-reduce:animate-none rounded-full bg-status-active/30 duration-1000" />
                   <span className="relative inline-flex size-2 rounded-full bg-status-active" />
                 </span>
                 <span>

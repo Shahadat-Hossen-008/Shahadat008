@@ -58,7 +58,7 @@ export function ProjectsSection({
       aria-labelledby="projects-heading"
       className="bg-background text-foreground"
     >
-      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 sm:pb-28 lg:pb-36">
+      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 lg:pb-20">
         {/* Showcase Section Heading */}
         <SectionHeading
           as="h1"

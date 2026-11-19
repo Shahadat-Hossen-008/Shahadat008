@@ -68,18 +68,27 @@ export function SocialLinks({
         const Icon = NETWORK_ICONS[link.network] ?? FaLink;
         const fallbackLabel = NETWORK_LABELS[link.network] ?? "Website";
         const label = link.label?.trim() || fallbackLabel;
+        const isDirectProtocol =
+          link.href.startsWith("mailto:") || link.href.startsWith("tel:");
 
         return (
           <li key={`${link.network}-${link.url}`}>
             <a
               href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={isDirectProtocol ? undefined : "_blank"}
+              rel={isDirectProtocol ? undefined : "noopener noreferrer"}
               aria-label={label}
               title={label}
-              className="inline-flex items-center gap-2 text-foreground/70 transition-colors duration-300 hover:text-primary"
+              className={
+                variant === "circle"
+                  ? "inline-flex size-11 items-center justify-center rounded-full border border-foreground/20 text-foreground transition-colors duration-200 hover:border-foreground hover:bg-foreground hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  : "inline-flex items-center gap-2 text-foreground/70 transition-colors duration-300 hover:text-primary"
+              }
             >
-              <Icon className="text-lg" />
+              <Icon
+                aria-hidden="true"
+                className={variant === "circle" ? "text-base" : "text-lg"}
+              />
               {variant === "label" ? (
                 <span className="text-sm">{label}</span>
               ) : null}

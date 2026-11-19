@@ -8,7 +8,15 @@ describe("ContactPageBuilder", () => {
     const html = renderToStaticMarkup(
       <ContactPageBuilder
         page={{
-          seo: null,
+          seo: {
+            title: "Contact",
+            description: "Get in touch",
+            openGraph: null,
+            robots: null,
+            canonicalUrl: null,
+            redirect: null,
+            keywords: null,
+          },
           eyebrow: "GET IN TOUCH",
           heading: "Let’s build something careful together.",
           headingAccent: "careful together.",
@@ -33,5 +41,6 @@ describe("ContactPageBuilder", () => {
     expect(html).toContain("General Message");
     expect(html).toContain("MESSAGE");
     expect(html).toContain("SEND MESSAGE");
+    expect(html).not.toContain("<main");
   });
 });

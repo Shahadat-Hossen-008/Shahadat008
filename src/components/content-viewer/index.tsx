@@ -20,6 +20,10 @@ export function ContentViewer({
 }: IContentViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const wasOpenRef = useRef(false);
 
   const {
     zoom,
@@ -37,12 +41,63 @@ export function ContentViewer({
   });
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      if (wasOpenRef.current) {
+        wasOpenRef.current = false;
+        const previousTarget = previousFocusRef.current;
+        previousFocusRef.current = null;
+        if (previousTarget?.isConnected) {
+          previousTarget.focus();
+        }
+      }
+      return;
+    }
+
+    if (!wasOpenRef.current) {
+      wasOpenRef.current = true;
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      closeButtonRef.current?.focus();
+    }
 
     const raf = requestAnimationFrame(() => fitToViewport());
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onOpenChange(false);
+        return;
+      }
+
+      if (e.key !== "Tab") {
+        return;
+      }
+
+      const toolbar = toolbarRef.current;
+      if (!toolbar) {
+        return;
+      }
+
+      const buttons = toolbar.querySelectorAll<HTMLButtonElement>(
+        "button:not([disabled])",
+      );
+      if (buttons.length === 0) {
+        return;
+      }
+
+      const firstButton = buttons[0];
+      const lastButton = buttons[buttons.length - 1];
+      const active = document.activeElement;
+      const isInsideToolbar = toolbar.contains(active);
+
+      if (e.shiftKey) {
+        if (!isInsideToolbar || active === firstButton) {
+          e.preventDefault();
+          lastButton?.focus();
+        }
+      } else if (!isInsideToolbar || active === lastButton) {
+        e.preventDefault();
+        firstButton?.focus();
       }
     };
 
@@ -69,6 +124,7 @@ export function ContentViewer({
       >
         {/* Toolbar */}
         <div
+          ref={toolbarRef}
           className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-row border border-border/40 bg-surface/95 px-2.5 py-1.5 shadow-button backdrop-blur-xs"
           onMouseDown={(e) => e.stopPropagation()}
         >
@@ -103,6 +159,7 @@ export function ContentViewer({
           </button>
           <div className="mx-1 h-4 w-px bg-border/40" />
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={() => onOpenChange(false)}
             className={TOOLBAR_BTN}

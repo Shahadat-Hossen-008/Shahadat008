@@ -32,7 +32,6 @@ import { pageSection } from "../_root/sections";
 // Page Sections
 import technologies from "../buildableSection/technologies";
 import richText from "../buildableSection/richText";
-import carouselTech from "../buildableSection/carouselTech";
 import { personalIntroSection } from "../buildableSection/personalIntro";
 import { engineeringPillars } from "../buildableSection/engineeringPillars";
 import { quoteSection } from "../buildableSection/quoteSection";
@@ -73,7 +72,6 @@ export const sections: DocumentDefinition[] = [
   ctaSection,
   richText,
   technologies,
-  carouselTech,
 ];
 
 export const hoistedObjects: SchemaTypeDefinition[] = [

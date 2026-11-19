@@ -35,7 +35,12 @@ const mockData: PersonalIntroData = {
       slug: "portfolio-2026",
       liveLink: "https://example.com",
       caseStudyLink: null,
-      image: null,
+      image: {
+        imageFile: null,
+        altText: "",
+        isClickable: null,
+        link: null,
+      },
     },
   },
   learning: {

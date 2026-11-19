@@ -92,7 +92,7 @@ describe("EngineeringPillarsSectionBuilder", () => {
     ).toBe("");
 
     expect(render({ columns: [] })).toBe("");
-    expect(render({ columns: null })).toBe("");
+    expect(render({ columns: null as never })).toBe("");
   });
 
   it("is a server component (no \"use client\")", () => {

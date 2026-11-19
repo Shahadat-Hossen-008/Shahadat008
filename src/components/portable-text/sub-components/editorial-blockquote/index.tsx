@@ -17,7 +17,7 @@ export function EditorialBlockquote({
   return (
     <blockquote
       data-editorial-blockquote="true"
-      className="my-8 w-full min-w-0 rounded-2xl bg-surface border-l-2 border-mint p-6 sm:p-8 text-foreground text-base sm:text-lg leading-relaxed shadow-sm"
+      className="my-8 w-full min-w-0 wrap-anywhere rounded-2xl bg-surface border-l-2 border-mint p-6 sm:p-8 text-foreground text-base sm:text-lg leading-relaxed shadow-sm"
     >
       <div className="[&>p]:mb-3 [&>p:last-child]:mb-0">{children}</div>
       {cleanAttribution && (

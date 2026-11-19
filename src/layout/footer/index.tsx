@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { NavLinkItem } from "@/components/nav-link";
-import { Section } from "@/components/section";
 import { SocialLinks } from "@/components/social-links";
 import { urlFor } from "@/sanity/lib/image";
 import type { IFooterProps } from "./interface";
@@ -11,101 +9,87 @@ export function Footer({
   siteTitle,
   logo,
   hasLogoImage,
-  hasBrand,
   mainContent,
-  email,
-  phone,
   base,
   socialLinks,
-  links,
 }: IFooterProps) {
+  const copyrightText =
+    base?.trim() || `© 2024 ${siteTitle?.trim() || "Shahadat Hossain"}`;
+  const logoDimensions = logo?.imageFile?.asset?.metadata?.dimensions;
+  const logoWidth =
+    logoDimensions?.width && logoDimensions.width > 0
+      ? Math.round(logoDimensions.width)
+      : 120;
+  const logoHeight =
+    logoDimensions?.height && logoDimensions.height > 0
+      ? Math.round(logoDimensions.height)
+      : 40;
+
   return (
-    <Section as="footer" tone="forest" className="border-t border-border">
-      <div className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-          {hasBrand && (
-            <div className="flex flex-col items-start gap-6 max-w-sm">
-              {hasLogoImage && (
+    <footer className="bg-background text-foreground">
+      <div className="mx-auto w-full max-w-page px-4 pt-10 pb-8 sm:px-6 sm:pt-14 sm:pb-12 lg:px-8">
+        <div className="rounded-panel bg-surface border border-foreground/10 px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+          <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start">
+            {/* 1. Existing Portfolio Logo & 2. Short Professional Description */}
+            <div className="flex flex-col items-start gap-5 max-w-md">
+              {hasLogoImage ? (
                 <Link
                   href="/"
                   aria-label={logo?.altText || siteTitle || "Home"}
+                  className="inline-flex items-center shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground rounded-sm"
                 >
                   <Image
                     src={urlFor(logo!.imageFile!)
-                      .width(192)
-                      .height(192)
+                      .width(240)
+                      .fit("max")
+                      .auto("format")
                       .url()}
                     alt={logo?.altText || siteTitle || "Logo"}
-                    width={56}
-                    height={56}
-                    className="object-contain rounded-full"
+                    width={logoWidth}
+                    height={logoHeight}
+                    className="h-9 sm:h-10 w-auto object-contain"
                   />
                 </Link>
+              ) : (
+                siteTitle && (
+                  <Link
+                    href="/"
+                    className="inline-flex items-center font-mono text-lg sm:text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground rounded-sm"
+                  >
+                    {siteTitle}
+                  </Link>
+                )
               )}
 
               {mainContent && (
-                <p className="text-foreground/70 leading-relaxed">
+                <p className="font-display text-2xl sm:text-[1.75rem] leading-[1.28] tracking-tight text-foreground">
                   {mainContent}
                 </p>
               )}
-
-              {(email || phone) && (
-                <address className="not-italic flex flex-col gap-1 text-foreground/70">
-                  {email && (
-                    <a
-                      href={`mailto:${email}`}
-                      className="transition-colors duration-300 hover:text-primary"
-                    >
-                      {email}
-                    </a>
-                  )}
-                  {phone && (
-                    <a
-                      href={`tel:${phone.replace(/[^\d+]/g, "")}`}
-                      className="transition-colors duration-300 hover:text-primary"
-                    >
-                      {phone}
-                    </a>
-                  )}
-                </address>
-              )}
-
-              <SocialLinks
-                links={socialLinks}
-                className="flex items-center gap-5"
-              />
             </div>
-          )}
 
-          {links.length > 0 && (
-            <nav
-              aria-label="Footer links"
-              className="flex flex-col items-start gap-4"
-            >
-              <h3 className="text-sm uppercase tracking-[0.14em] text-foreground/50">
-                Links
-              </h3>
-              <ul className="flex flex-col gap-3">
-                {links.map((link) => (
-                  <li key={link._key ?? link.label}>
-                    <NavLinkItem
-                      link={link}
-                      className="text-foreground/80 transition-colors duration-300 hover:text-primary"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-        </div>
-
-        {base && (
-          <div className="mt-12 border-t border-foreground/10 pt-6 text-sm text-foreground/50">
-            {base}
+            {/* 3. Social Connection Links */}
+            {Boolean(socialLinks?.length) && (
+              <div className="flex flex-col items-start gap-4">
+                <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  CONNECT
+                </span>
+                <SocialLinks
+                  links={socialLinks}
+                  variant="circle"
+                  className="flex flex-wrap items-center gap-3"
+                />
+              </div>
+            )}
           </div>
-        )}
+
+          {/* 4. Copyright Message */}
+          <div className="mt-10 sm:mt-12 border-t border-foreground/12 pt-6 font-sans text-xs sm:text-sm text-muted-foreground">
+            {copyrightText}
+          </div>
+        </div>
       </div>
-    </Section>
+    </footer>
   );
 }
 

@@ -4,7 +4,7 @@ import type { IBlogPageBuilderProps } from "./interface";
 
 export function BlogPageBuilder({ page }: IBlogPageBuilderProps) {
   return (
-    <main className="pt-8 pb-28">
+    <div className="pt-8 pb-28">
       <BlogListSection
         eyebrow={page?.eyebrow}
         heading={page?.heading}
@@ -12,7 +12,7 @@ export function BlogPageBuilder({ page }: IBlogPageBuilderProps) {
         posts={page?.blogPosts ?? []}
       />
       {page?.sections && <SectionBuilder sections={page.sections} />}
-    </main>
+    </div>
   );
 }
 

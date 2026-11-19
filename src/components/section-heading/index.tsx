@@ -9,7 +9,7 @@ export function SectionHeading({
   headingAccent,
   className = "flex flex-col gap-4 sm:gap-6 max-w-4xl",
   eyebrowClassName = "font-sans text-xs sm:text-[13px] font-semibold tracking-[0.2em] uppercase text-muted-foreground",
-  headingClassName = "font-display text-5xl sm:text-6xl lg:text-[4.5rem] xl:text-[5rem] font-bold leading-[1.04] tracking-tight text-balance text-foreground",
+  headingClassName = "font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-bold leading-[1.04] tracking-tight text-balance text-foreground",
 }: ISectionHeadingProps) {
   const parts = splitHeadline(heading, headingAccent);
 

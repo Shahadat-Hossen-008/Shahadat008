@@ -7,6 +7,8 @@ import {
   type Path,
 } from "sanity";
 
+type ObjectItemMember = Extract<ArrayOfObjectsMember, { kind: "item" }>["item"];
+
 function isTextBlockOrSpan(member: ArrayOfObjectsMember): boolean {
   if (member.kind !== "item") return false;
   const value = member.item?.value as { _type?: string } | undefined;
@@ -104,7 +106,7 @@ describe("PortableTextInput modal detection and caret navigation", () => {
         schemaType: mockObjectSchemaType("block"),
         value: { _type: "block", _key: "block-1", children: [] },
         members: [],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     expect(findOpenModalKey([textBlockMember])).toBeNull();
@@ -146,13 +148,13 @@ describe("PortableTextInput modal detection and caret navigation", () => {
                     schemaType: mockObjectSchemaType("span"),
                     value: { _type: "span", _key: "span-1", text: "Hello" },
                     members: [],
-                  } as unknown as ArrayOfObjectsMember["item"],
+                  } as unknown as ObjectItemMember,
                 },
               ],
             },
           } as unknown as ObjectMember,
         ],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     expect(findOpenModalKey([textBlockWithOpenSpan])).toBeNull();
@@ -172,7 +174,7 @@ describe("PortableTextInput modal detection and caret navigation", () => {
         schemaType: mockObjectSchemaType("editorialSection"),
         value: { _type: "editorialSection", _key: "editorial-1" },
         members: [],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     expect(findOpenModalKey([editorialMember])).toBe("editorial-1");
@@ -209,13 +211,13 @@ describe("PortableTextInput modal detection and caret navigation", () => {
                     id: "link-1",
                     schemaType: mockObjectSchemaType("linkUrl"),
                     value: { _type: "linkUrl", _key: "link-1", href: "https://example.com" },
-                  } as unknown as ArrayOfObjectsMember["item"],
+                  } as unknown as ObjectItemMember,
                 },
               ],
             },
           } as unknown as ObjectMember,
         ],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     expect(findOpenModalKey([textBlockWithOpenAnnotation])).toBe("block-1");
@@ -235,7 +237,7 @@ describe("PortableTextInput modal detection and caret navigation", () => {
         schemaType: mockObjectSchemaType("editorialSection"),
         value: { _type: "editorialSection", _key: "editorial-1" },
         members: [],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     const members = [editorialMember];
@@ -291,7 +293,7 @@ describe("PortableTextInput modal detection and caret navigation", () => {
         schemaType: mockObjectSchemaType("editorialSection"),
         value: { _type: "editorialSection", _key: "editorial-1" },
         members: [],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     const members = [editorialMember];
@@ -343,7 +345,7 @@ describe("PortableTextInput modal detection and caret navigation", () => {
         schemaType: mockObjectSchemaType("editorialSection"),
         value: { _type: "editorialSection", _key: "editorial-1" },
         members: [],
-      } as unknown as ArrayOfObjectsMember["item"],
+      } as unknown as ObjectItemMember,
     };
 
     const members = [closedEditorialMember];

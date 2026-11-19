@@ -1,16 +1,14 @@
 import { hasSanityImage } from "@/sanity/lib/images";
-import { isExternalHref, resolveLink } from "@/lib/sanity/links";
 import { Footer } from "../index";
 import type { IFooterProps } from "../interface";
+import type { SiteSocialLink } from "../../interface";
 import type { ISanityFooterProps } from "./interface";
 
 /**
- * Site-wide footer builder.
+ * Site-wide minimal footer builder.
  *
- * Structure mirrors the Studio `layout.footer` object: brand content, a
- * configurable link list, and a base bar.
- *
- * Footer columns filter unresolved links and cannot render a dead href.
+ * Reuses `layout.identity.logo` and `layout.identity.socialLinks` alongside
+ * `layout.footer.mainContent` and `layout.footer.base`.
  *
  * Renders nothing at all when `layout` does not exist yet, rather than an
  * empty shell.
@@ -23,21 +21,29 @@ export function FooterBuilder({ layout }: ISanityFooterProps) {
     return null;
   }
 
-  const links = (footer?.columns ?? []).flatMap((link) => {
-    const href = resolveLink(link);
-    return href ? [{ ...link, href, external: isExternalHref(href) }] : [];
-  });
-
   const hasLogoImage = hasSanityImage(identity.logo);
+  const mainContent = footer?.mainContent || identity.siteDescription;
 
-  const hasBrand =
+  const baseSocialLinks: SiteSocialLink[] = [...(identity.socialLinks ?? [])];
+  const hasEmailSocial = baseSocialLinks.some(
+    (item) => item.network === "email",
+  );
+  if (!hasEmailSocial && footer?.email?.trim()) {
+    baseSocialLinks.push({
+      network: "email",
+      label: "Email",
+      url: `mailto:${footer.email.trim()}`,
+    });
+  }
+
+  const hasContent =
     hasLogoImage ||
-    Boolean(footer?.mainContent) ||
-    Boolean(footer?.email) ||
-    Boolean(footer?.phone) ||
-    Boolean(identity.socialLinks?.length);
+    Boolean(identity.siteTitle) ||
+    Boolean(mainContent) ||
+    baseSocialLinks.length > 0 ||
+    Boolean(footer?.base);
 
-  if (!hasBrand && links.length === 0 && !footer?.base) {
+  if (!hasContent) {
     return null;
   }
 
@@ -45,13 +51,9 @@ export function FooterBuilder({ layout }: ISanityFooterProps) {
     siteTitle: identity.siteTitle,
     logo: identity.logo,
     hasLogoImage,
-    hasBrand,
-    mainContent: footer?.mainContent,
-    email: footer?.email,
-    phone: footer?.phone,
+    mainContent,
     base: footer?.base,
-    socialLinks: identity.socialLinks,
-    links,
+    socialLinks: baseSocialLinks,
   };
 
   return <Footer {...footerProps} />;

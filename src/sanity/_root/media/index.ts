@@ -1,6 +1,8 @@
 import { ImageIcon } from "@sanity/icons";
 import { defineField } from "sanity";
 
+import { link } from "../link";
+
 export const customImage = defineField({
   name: "customImage",
   title: "Custom Image",
@@ -26,11 +28,18 @@ export const customImage = defineField({
       name: "isClickable",
       title: "Is Clickable?",
       initialValue: false,
+      validation: (rule) =>
+        rule.custom((isClickable, context) => {
+          if (!isClickable) return true;
+          const parent = context.parent as { link?: unknown } | undefined;
+          if (!parent?.link || typeof parent.link !== "object") {
+            return "Configure the link details when the image is clickable.";
+          }
+          return true;
+        }),
     }),
     defineField({
-      type: "url",
-      name: "linkUrl",
-      title: "Link URL",
+      ...link("link"),
       hidden: ({ parent }) => !parent?.isClickable,
     }),
   ],

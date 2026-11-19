@@ -2,19 +2,64 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 import { NavLinkItem } from "@/components/nav-link";
-import { SocialLinks } from "@/components/social-links";
 import { urlFor } from "@/sanity/lib/image";
-import HamburgerMenu from "../../../public/icons/HamburgerMenu";
-import CrossIcon from "../../../public/icons/CrossIcon";
 import type { IHeaderProps } from "./interface";
 
-const LINK_CLASS =
-  "text-foreground hover:text-muted-foreground transition-colors duration-300";
-const CTA_CLASS =
-  "bg-limestone text-forest rounded-full px-6.5 py-3 text-base transition-colors duration-300 hover:bg-soft-limestone";
+const DESKTOP_LINK_BASE_CLASS =
+  "header-nav-link font-sans text-[15px] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground rounded-xs";
+
+const DESKTOP_CTA_CLASS =
+  "inline-flex items-center justify-center rounded-full bg-forest px-6 py-2.5 font-sans text-[15px] font-medium text-limestone transition-colors duration-200 hover:bg-soft-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest";
+
+const MOBILE_LINK_BASE_CLASS =
+  "mobile-nav-link group flex items-center justify-between py-4 px-2 font-sans text-lg transition-colors duration-200 border-b border-foreground/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground rounded-xs";
+
+const MOBILE_CTA_CLASS =
+  "mt-6 inline-flex w-full items-center justify-center rounded-full bg-forest px-6 py-3.5 font-sans text-base font-medium text-limestone transition-colors duration-200 hover:bg-soft-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest";
+
+function normalizeRoutePath(raw: string): string {
+  const withoutQueryOrHash = raw.split(/[?#]/)[0]?.trim() ?? "";
+  if (!withoutQueryOrHash.startsWith("/")) return "";
+  const trimmed = withoutQueryOrHash.replace(/\/+$/, "");
+  if (trimmed === "" || trimmed === "/") return "/";
+  if (trimmed === "/blog" || trimmed.startsWith("/blog/")) {
+    return `/blogs${trimmed.slice("/blog".length)}`;
+  }
+  if (trimmed === "/project" || trimmed.startsWith("/project/")) {
+    return `/projects${trimmed.slice("/project".length)}`;
+  }
+  return trimmed;
+}
+
+/**
+ * Determines whether a navigation link matches the current pathname.
+ *
+ * - `/` matches only the root `/` route.
+ * - Top-level section routes (`/projects`, `/blogs`, `/about`, `/contact`)
+ *   match both the index route and nested detail routes (`/projects/[slug]`,
+ *   `/blogs/[slug]`) strictly on `/` segment boundaries so similar prefixes
+ *   (e.g. `/projects-archive`) never false-match.
+ */
+export function isNavLinkActive(
+  pathname: string | null | undefined,
+  linkHref: string | null | undefined,
+): boolean {
+  if (!pathname || !linkHref) return false;
+
+  const current = normalizeRoutePath(pathname);
+  const target = normalizeRoutePath(linkHref);
+
+  if (!current || !target) return false;
+  if (target === "/") {
+    return current === "/";
+  }
+
+  return current === target || current.startsWith(`${target}/`);
+}
 
 export function Header({
   siteTitle,
@@ -22,133 +67,248 @@ export function Header({
   hasLogoImage,
   navLinks,
   cta,
-  showSocialLinks,
-  socialLinks,
 }: IHeaderProps) {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Next keeps this component mounted across navigations, so the open mobile
-  // menu is closed explicitly on navigation (`closeMenu`) rather than by an
-  // effect keyed on the pathname, which would cause a cascading render.
+  // Lock background scrolling, handle Escape, and contain Tab focus while the mobile drawer is open
   useEffect(() => {
     if (!isMenuOpen) {
       return;
     }
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsMenuOpen(false);
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+        toggleButtonRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const panel = drawerPanelRef.current;
+      if (!panel || !panel.contains(document.activeElement)) {
+        return;
+      }
+
+      const links = panel.querySelectorAll<HTMLAnchorElement>("a[href]");
+      if (links.length === 0) {
+        return;
+      }
+
+      const firstLink = links[0];
+      const lastLink = links[links.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === firstLink) {
+          event.preventDefault();
+          lastLink?.focus();
+        }
+      } else if (document.activeElement === lastLink) {
+        event.preventDefault();
+        firstLink?.focus();
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [isMenuOpen]);
 
+  const logoDimensions = logo?.imageFile?.asset?.metadata?.dimensions;
+  const logoWidth =
+    logoDimensions?.width && logoDimensions.width > 0
+      ? Math.round(logoDimensions.width)
+      : 120;
+  const logoHeight =
+    logoDimensions?.height && logoDimensions.height > 0
+      ? Math.round(logoDimensions.height)
+      : 40;
+
   return (
-    <section className="mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8 py-4 lg:py-8 fixed left-0 right-0 top-0 z-100">
+    <header className="sticky top-0 z-50 w-full">
+      {/* Top Section: Persistent Header Bar (Logo on left, Nav / #nav-icon3 on right) */}
       <div
-        className="grid grid-cols-2 lg:grid-cols-3
-          items-center border border-foreground/15 rounded-full p-2 bg-background/80"
+        className={`relative z-60 w-full transition-colors duration-200 ${
+          isMenuOpen
+            ? "bg-background border-b border-foreground/12"
+            : "bg-background/90 backdrop-blur-md"
+        }`}
       >
-        <div className="grid-cols-1 flex items-center gap-2">
-          {hasLogoImage ? (
-            <Link href="/" aria-label={logo?.altText || siteTitle || undefined}>
-              <Image
-                src={urlFor(logo!.imageFile!).width(96).height(96).url()}
-                alt={logo?.altText || siteTitle || "Logo"}
-                width={48}
-                height={48}
-                className="object-contain rounded-full"
-              />
-            </Link>
-          ) : (
-            siteTitle && (
-              <Link href="/" className="text-foreground font-semibold px-2">
-                {siteTitle}
-              </Link>
-            )
-          )}
-        </div>
-
-        <div className="hidden lg:flex justify-center">
-          {navLinks.length > 0 && (
-            <nav className="flex gap-6 items-center" aria-label="Main">
-              {navLinks.map((link) => (
-                <NavLinkItem
-                  key={link._key ?? link.label}
-                  link={link}
-                  className={LINK_CLASS}
+        <div className="mx-auto flex w-full max-w-page items-center justify-between px-4 py-4 sm:px-6 lg:px-8 lg:py-6">
+          {/* Left: Portfolio Logo */}
+          <div className="flex items-center shrink-0">
+            {hasLogoImage ? (
+              <Link
+                href="/"
+                onClick={closeMenu}
+                aria-label={logo?.altText || siteTitle || "Home"}
+                className="inline-flex items-center shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground rounded-sm"
+              >
+                <Image
+                  src={urlFor(logo!.imageFile!)
+                    .width(240)
+                    .fit("max")
+                    .auto("format")
+                    .url()}
+                  alt={logo?.altText || siteTitle || "Logo"}
+                  width={logoWidth}
+                  height={logoHeight}
+                  className="h-9 sm:h-10 w-auto object-contain"
                 />
-              ))}
-            </nav>
-          )}
-        </div>
-
-        <div className="flex-1 flex justify-end items-center gap-6">
-          {showSocialLinks && (
-            <SocialLinks
-              links={socialLinks}
-              className="hidden lg:flex items-center gap-4"
-            />
-          )}
-
-          {cta?.href && !cta.isDisabled && (
-            <NavLinkItem
-              link={cta}
-              className={`${CTA_CLASS} hidden md:inline-block`}
-            />
-          )}
-
-          <div
-            className="cursor-pointer lg:hidden"
-            role="button"
-            tabIndex={0}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMenuOpen}
-            onClick={() => setIsMenuOpen((open) => !open)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                setIsMenuOpen((open) => !open);
-              }
-            }}
-          >
-            {!isMenuOpen ? <HamburgerMenu /> : <CrossIcon />}
+              </Link>
+            ) : (
+              siteTitle && (
+                <Link
+                  href="/"
+                  onClick={closeMenu}
+                  className="inline-flex items-center font-mono text-lg sm:text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground rounded-sm"
+                >
+                  {siteTitle}
+                </Link>
+              )
+            )}
           </div>
 
-          {isMenuOpen && (
-            <div className="absolute top-full right-4 mt-2 w-56 bg-background border border-foreground/15 rounded-lg shadow-lg py-2 z-50">
-              <nav className="flex flex-col gap-2" aria-label="Mobile">
-                {navLinks.map((link) => (
-                  <NavLinkItem
-                    key={link._key ?? link.label}
-                    link={{ ...link, openInNewTab: false }}
-                    className={`${LINK_CLASS} py-2 px-4`}
-                    onNavigate={closeMenu}
-                  />
-                ))}
+          {/* Right: All Desktop Navigation Items + Resume CTA + Mobile Toggle */}
+          <div className="flex items-center justify-end gap-7 xl:gap-8">
+            {navLinks.length > 0 && (
+              <nav
+                aria-label="Main"
+                className="hidden lg:flex items-center gap-7 xl:gap-8"
+              >
+                {navLinks.map((link) => {
+                  const active = isNavLinkActive(pathname, link.href);
 
-                {cta?.href && !cta.isDisabled && (
-                  <NavLinkItem
-                    link={cta}
-                    className={`${CTA_CLASS} my-2`}
-                    onNavigate={closeMenu}
-                  />
-                )}
-
-                {showSocialLinks && (
-                  <SocialLinks
-                    links={socialLinks}
-                    className="flex items-center gap-5 px-4 pt-3 mt-1 border-t border-foreground/10"
-                  />
-                )}
+                  return (
+                    <NavLinkItem
+                      key={link._key ?? link.label}
+                      link={link}
+                      isActive={active}
+                      className={`${DESKTOP_LINK_BASE_CLASS} ${
+                        active
+                          ? "font-semibold text-foreground"
+                          : "font-medium text-foreground/85 hover:text-foreground"
+                      }`}
+                    />
+                  );
+                })}
               </nav>
-            </div>
-          )}
+            )}
+
+            {cta?.href && !cta.isDisabled && (
+              <div className="hidden lg:block">
+                <NavLinkItem link={cta} className={DESKTOP_CTA_CLASS} />
+              </div>
+            )}
+
+            {/* Mobile Four-Line Hamburger Button (#nav-icon3) stays in place in the top bar */}
+            <button
+              ref={toggleButtonRef}
+              type="button"
+              id="nav-icon3"
+              data-testid="mobile-menu-toggle"
+              aria-label={
+                isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+              }
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation-panel"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              className={`nav-icon3 relative z-60 inline-flex size-11 items-center justify-center rounded-full text-foreground lg:hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
+                isMenuOpen ? "open" : ""
+              }`}
+            >
+              <span aria-hidden="true" className="nav-icon3-bars">
+                <span />
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Bottom Section Viewport: Clipped container directly below the header bar to prevent horizontal overflow while closed */}
+      <div className="pointer-events-none absolute top-full inset-x-0 z-50 h-[calc(100dvh-4.75rem)] overflow-hidden lg:hidden">
+        {/* Backdrop Scrim */}
+        <div
+          aria-hidden="true"
+          data-testid="mobile-menu-backdrop"
+          onClick={closeMenu}
+          className={`mobile-nav-backdrop absolute inset-0 z-40 bg-forest/25 backdrop-blur-xs ${
+            isMenuOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+        />
+
+        {/* Complete Navigation Drawer Container: Slides as one unit from translateX(100%) to translateX(0) */}
+        <aside
+          ref={drawerPanelRef}
+          id="mobile-navigation-panel"
+          data-testid="mobile-navigation-panel"
+          data-open={isMenuOpen ? "true" : "false"}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          aria-hidden={!isMenuOpen}
+          inert={!isMenuOpen ? true : undefined}
+          className={`mobile-nav-panel absolute top-0 right-0 z-50 flex h-full w-full sm:max-w-sm flex-col overflow-y-auto bg-surface px-6 pt-6 pb-10 shadow-2xl border-l border-foreground/10 ${
+            isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+          }`}
+        >
+          <nav aria-label="Mobile" className="flex flex-col">
+            {navLinks.map((link) => {
+              const active = isNavLinkActive(pathname, link.href);
+
+              return (
+                <NavLinkItem
+                  key={link._key ?? link.label}
+                  link={{ ...link, openInNewTab: false }}
+                  isActive={active}
+                  className={`${MOBILE_LINK_BASE_CLASS} ${
+                    active
+                      ? "font-semibold text-foreground"
+                      : "font-medium text-foreground/85 hover:text-foreground"
+                  }`}
+                  onNavigate={closeMenu}
+                >
+                  <span className="mobile-nav-link-text">{link.label}</span>
+                  <span
+                    aria-hidden="true"
+                    className={`transition-transform duration-200 group-hover:translate-x-1 ${
+                      active ? "text-foreground" : "text-muted-foreground/70"
+                    }`}
+                  >
+                    →
+                  </span>
+                </NavLinkItem>
+              );
+            })}
+
+            {cta?.href && !cta.isDisabled && (
+              <NavLinkItem
+                link={cta}
+                className={MOBILE_CTA_CLASS}
+                onNavigate={closeMenu}
+              />
+            )}
+          </nav>
+        </aside>
+      </div>
+    </header>
   );
 }
 

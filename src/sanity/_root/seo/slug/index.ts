@@ -3,7 +3,6 @@ import { defineField } from "sanity";
 import { Slug } from "@/sanity/types";
 import { ISanitySlugOptions } from "./interface";
 import SlugInput from "../../../components/slug-input";
-import { generalPagesRestrictedSlugs } from "./restricted-slugs";
 
 export function slugify(slug: string) {
   return slug
@@ -32,7 +31,7 @@ export function slug({ source, isFixed, prefix }: ISanitySlugOptions) {
       },
       components: { input: SlugInput },
       validation: (rule) =>
-        rule.custom<Slug>((currentValue, { document }) => {
+        rule.custom<Slug>((currentValue) => {
           if (!isFixed) {
             if (currentValue !== undefined) {
               const slug = currentValue.current;
@@ -43,21 +42,6 @@ export function slug({ source, isFixed, prefix }: ISanitySlugOptions) {
 
               if (slug.indexOf("/") !== -1) {
                 return "Please remove any `/` from the slug.";
-              }
-
-              /**
-               * Check if the slug matches any slug in the restrictions list.
-               * This is used to prevent duplicate urls, incase we have fixed
-               * hardcoded pages.
-               */
-              if (document) {
-                if (document._type == "generalPage") {
-                  if (
-                    generalPagesRestrictedSlugs.includes(currentValue.current)
-                  ) {
-                    return "This is a reserved slug. Please use a different slug.";
-                  }
-                }
               }
 
               return true;
