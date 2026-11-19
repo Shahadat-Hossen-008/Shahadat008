@@ -107,5 +107,7 @@ describe("AboutPage", () => {
     // Numbered headings should NOT appear on the About page
     expect(html).not.toContain("02 —");
     expect(html).not.toContain("03 —");
+    // Page builder must not emit a nested <main> landmark inside LayoutBuilder's <main>
+    expect(html).not.toContain("<main");
   });
 });

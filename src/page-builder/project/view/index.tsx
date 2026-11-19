@@ -4,7 +4,7 @@ import type { IProjectPageBuilderProps } from "./interface";
 
 export function ProjectPageBuilder({ page }: IProjectPageBuilderProps) {
   return (
-    <main className="pt-8 pb-28">
+    <div className="pt-8 pb-28">
       {page.projects && page.projects.length > 0 && (
         <ProjectsSection
           eyebrow={page.eyebrow}
@@ -14,7 +14,7 @@ export function ProjectPageBuilder({ page }: IProjectPageBuilderProps) {
         />
       )}
       {page.sections && <SectionBuilder sections={page.sections} />}
-    </main>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@ import type { IContactPageBuilderProps } from "./interface";
 
 export function ContactPageBuilder({ page }: IContactPageBuilderProps) {
   return (
-    <main className="pt-8 pb-28">
+    <div className="pt-8 pb-28">
       <ContactSection
         eyebrow={page?.eyebrow}
         heading={page?.heading}
@@ -12,7 +12,7 @@ export function ContactPageBuilder({ page }: IContactPageBuilderProps) {
         description={page?.description}
       />
       {page?.sections && <SectionBuilder sections={page.sections} />}
-    </main>
+    </div>
   );
 }
 

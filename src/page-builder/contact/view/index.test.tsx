@@ -33,5 +33,6 @@ describe("ContactPageBuilder", () => {
     expect(html).toContain("General Message");
     expect(html).toContain("MESSAGE");
     expect(html).toContain("SEND MESSAGE");
+    expect(html).not.toContain("<main");
   });
 });
