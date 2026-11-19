@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { NavLinkItem } from "@/components/nav-link";
-import { SocialLinks } from "@/components/social-links";
 import { urlFor } from "@/sanity/lib/image";
 import type { IHeaderProps } from "./interface";
 
@@ -68,8 +67,6 @@ export function Header({
   hasLogoImage,
   navLinks,
   cta,
-  showSocialLinks,
-  socialLinks,
 }: IHeaderProps) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -210,13 +207,6 @@ export function Header({
               </nav>
             )}
 
-            {showSocialLinks && (
-              <SocialLinks
-                links={socialLinks}
-                className="hidden lg:flex items-center gap-4"
-              />
-            )}
-
             {cta?.href && !cta.isDisabled && (
               <div className="hidden lg:block">
                 <NavLinkItem link={cta} className={DESKTOP_CTA_CLASS} />
@@ -275,7 +265,7 @@ export function Header({
           aria-label="Mobile navigation"
           aria-hidden={!isMenuOpen}
           inert={!isMenuOpen ? true : undefined}
-          className={`mobile-nav-panel absolute top-0 right-0 z-50 flex h-full w-full sm:max-w-sm flex-col justify-between overflow-y-auto bg-surface px-6 pt-6 pb-10 shadow-2xl border-l border-foreground/10 ${
+          className={`mobile-nav-panel absolute top-0 right-0 z-50 flex h-full w-full sm:max-w-sm flex-col overflow-y-auto bg-surface px-6 pt-6 pb-10 shadow-2xl border-l border-foreground/10 ${
             isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >
@@ -316,14 +306,6 @@ export function Header({
               />
             )}
           </nav>
-
-          {showSocialLinks && (
-            <SocialLinks
-              links={socialLinks}
-              variant="circle"
-              className="flex flex-wrap items-center gap-3 pt-6 border-t border-foreground/10"
-            />
-          )}
         </aside>
       </div>
     </header>

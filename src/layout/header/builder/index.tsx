@@ -42,8 +42,6 @@ export function HeaderBuilder({ layout }: ISanityHeaderProps) {
     hasLogoImage,
     navLinks,
     cta,
-    showSocialLinks: header?.showSocialLinks,
-    socialLinks: identity.socialLinks,
   };
 
   return <Header {...headerProps} />;

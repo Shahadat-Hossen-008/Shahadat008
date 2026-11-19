@@ -1,3 +1,5 @@
+import { LINK_REFERENCE_FRAGMENT } from "../link/fragment";
+
 /**
  * Shared root GROQ projections for Sanity image and customImage objects.
  * Projects the dereferenced asset with dimensions, plus crop, hotspot, and metadata.
@@ -24,5 +26,12 @@ export const CUSTOM_IMAGE_FRAGMENT = /* groq */ `
   },
   altText,
   isClickable,
-  linkUrl
+  link {
+    label,
+    type,
+    url,
+    openInNewTab,
+    isDisabled,
+    ${LINK_REFERENCE_FRAGMENT}
+  }
 `;
