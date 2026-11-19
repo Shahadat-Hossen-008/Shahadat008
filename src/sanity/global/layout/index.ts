@@ -202,12 +202,6 @@ export const layout: DocumentDefinition = defineType({
           type: "string",
         }),
         defineField({
-          name: "columns",
-          title: "Columns",
-          type: "array",
-          of: [link()],
-        }),
-        defineField({
           name: "base",
           title: "Base content",
           type: "string",
