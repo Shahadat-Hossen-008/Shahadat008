@@ -17,9 +17,12 @@ export function NavLinkItem({
   link,
   className,
   children,
+  isActive,
   onNavigate,
 }: INavLinkItemProps) {
   const content = children ?? link.label;
+  const ariaCurrent = isActive ? "page" : undefined;
+  const dataActive = isActive ? "true" : undefined;
 
   if (!link.href || link.isDisabled) {
     return (
@@ -35,6 +38,8 @@ export function NavLinkItem({
         href={link.href}
         target={link.openInNewTab ? "_blank" : undefined}
         rel={link.openInNewTab ? "noopener noreferrer" : undefined}
+        aria-current={ariaCurrent}
+        data-active={dataActive}
         className={className}
         onClick={onNavigate}
       >
@@ -44,7 +49,13 @@ export function NavLinkItem({
   }
 
   return (
-    <Link href={link.href} className={className} onClick={onNavigate}>
+    <Link
+      href={link.href}
+      aria-current={ariaCurrent}
+      data-active={dataActive}
+      className={className}
+      onClick={onNavigate}
+    >
       {content}
     </Link>
   );
