@@ -1393,7 +1393,7 @@
                 "value": {
                   "type": "string"
                 },
-                "optional": true
+                "optional": false
               },
               "type": {
                 "type": "objectAttribute",
@@ -1410,7 +1410,7 @@
                     }
                   ]
                 },
-                "optional": true
+                "optional": false
               },
               "reference": {
                 "type": "objectAttribute",

@@ -251,8 +251,8 @@ export type CustomImage = {
   altText: string;
   isClickable?: boolean;
   link?: {
-    label?: string;
-    type?: "internal" | "external";
+    label: string;
+    type: "internal" | "external";
     reference?: {
       _ref: string;
       _type: "reference";
@@ -1692,8 +1692,8 @@ export type ABOUT_PAGE_QUERYResult = {
       altText: string;
       isClickable: boolean | null;
       link: {
-        label: string | null;
-        type: "external" | "internal" | null;
+        label: string;
+        type: "external" | "internal";
         url: string | null;
         openInNewTab: boolean | null;
         isDisabled: boolean | null;
@@ -1868,8 +1868,8 @@ export type ABOUT_PAGE_QUERYResult = {
           altText: string;
           isClickable: boolean | null;
           link: {
-            label: string | null;
-            type: "external" | "internal" | null;
+            label: string;
+            type: "external" | "internal";
             url: string | null;
             openInNewTab: boolean | null;
             isDisabled: boolean | null;
@@ -1947,8 +1947,8 @@ export type ABOUT_PAGE_QUERYResult = {
         altText: string;
         isClickable: boolean | null;
         link: {
-          label: string | null;
-          type: "external" | "internal" | null;
+          label: string;
+          type: "external" | "internal";
           url: string | null;
           openInNewTab: boolean | null;
           isDisabled: boolean | null;
@@ -2096,8 +2096,8 @@ export type SINGLE_BLOG_POST_QUERYResult = {
       altText: string;
       isClickable: boolean | null;
       link: {
-        label: string | null;
-        type: "external" | "internal" | null;
+        label: string;
+        type: "external" | "internal";
         url: string | null;
         openInNewTab: boolean | null;
         isDisabled: boolean | null;
@@ -2196,8 +2196,8 @@ export type SINGLE_BLOG_POST_QUERYResult = {
     altText: string;
     isClickable?: boolean;
     link?: {
-      label?: string;
-      type?: "external" | "internal";
+      label: string;
+      type: "external" | "internal";
       reference?: {
         _ref: string;
         _type: "reference";
@@ -2606,8 +2606,8 @@ export type BLOG_PAGE_QUERYResult = {
           altText: string;
           isClickable: boolean | null;
           link: {
-            label: string | null;
-            type: "external" | "internal" | null;
+            label: string;
+            type: "external" | "internal";
             url: string | null;
             openInNewTab: boolean | null;
             isDisabled: boolean | null;
@@ -2685,8 +2685,8 @@ export type BLOG_PAGE_QUERYResult = {
         altText: string;
         isClickable: boolean | null;
         link: {
-          label: string | null;
-          type: "external" | "internal" | null;
+          label: string;
+          type: "external" | "internal";
           url: string | null;
           openInNewTab: boolean | null;
           isDisabled: boolean | null;
@@ -2982,8 +2982,8 @@ export type CONTACT_PAGE_QUERYResult = {
           altText: string;
           isClickable: boolean | null;
           link: {
-            label: string | null;
-            type: "external" | "internal" | null;
+            label: string;
+            type: "external" | "internal";
             url: string | null;
             openInNewTab: boolean | null;
             isDisabled: boolean | null;
@@ -3061,8 +3061,8 @@ export type CONTACT_PAGE_QUERYResult = {
         altText: string;
         isClickable: boolean | null;
         link: {
-          label: string | null;
-          type: "external" | "internal" | null;
+          label: string;
+          type: "external" | "internal";
           url: string | null;
           openInNewTab: boolean | null;
           isDisabled: boolean | null;
@@ -3446,8 +3446,8 @@ export type PROFILE_QUERYResult = {
           altText: string;
           isClickable: boolean | null;
           link: {
-            label: string | null;
-            type: "external" | "internal" | null;
+            label: string;
+            type: "external" | "internal";
             url: string | null;
             openInNewTab: boolean | null;
             isDisabled: boolean | null;
@@ -3525,8 +3525,8 @@ export type PROFILE_QUERYResult = {
         altText: string;
         isClickable: boolean | null;
         link: {
-          label: string | null;
-          type: "external" | "internal" | null;
+          label: string;
+          type: "external" | "internal";
           url: string | null;
           openInNewTab: boolean | null;
           isDisabled: boolean | null;
@@ -3674,8 +3674,8 @@ export type SINGLE_PROJECT_QUERYResult = {
     altText: string;
     isClickable: boolean | null;
     link: {
-      label: string | null;
-      type: "external" | "internal" | null;
+      label: string;
+      type: "external" | "internal";
       url: string | null;
       openInNewTab: boolean | null;
       isDisabled: boolean | null;
@@ -3776,8 +3776,8 @@ export type SINGLE_PROJECT_QUERYResult = {
     altText: string;
     isClickable?: boolean;
     link?: {
-      label?: string;
-      type?: "external" | "internal";
+      label: string;
+      type: "external" | "internal";
       reference?: {
         _ref: string;
         _type: "reference";
@@ -4057,8 +4057,8 @@ export type PROJECT_PAGE_QUERYResult = {
       altText: string;
       isClickable: boolean | null;
       link: {
-        label: string | null;
-        type: "external" | "internal" | null;
+        label: string;
+        type: "external" | "internal";
         url: string | null;
         openInNewTab: boolean | null;
         isDisabled: boolean | null;
@@ -4235,8 +4235,8 @@ export type PROJECT_PAGE_QUERYResult = {
           altText: string;
           isClickable: boolean | null;
           link: {
-            label: string | null;
-            type: "external" | "internal" | null;
+            label: string;
+            type: "external" | "internal";
             url: string | null;
             openInNewTab: boolean | null;
             isDisabled: boolean | null;
@@ -4314,8 +4314,8 @@ export type PROJECT_PAGE_QUERYResult = {
         altText: string;
         isClickable: boolean | null;
         link: {
-          label: string | null;
-          type: "external" | "internal" | null;
+          label: string;
+          type: "external" | "internal";
           url: string | null;
           openInNewTab: boolean | null;
           isDisabled: boolean | null;
