@@ -2,11 +2,11 @@ import { Tile } from "../tile";
 import type { ILearningTileProps } from "./interface";
 
 export function LearningTile({ learning, rise = 3 }: ILearningTileProps) {
-  const eyebrow = learning?.eyebrow?.trim() || "Currently building";
+  const eyebrow = learning?.eyebrow?.trim() || "Exploring next";
   const title =
     learning?.title?.trim() ||
     "Refining an open-source design token CLI and exploring the edge of React 19 Server Components.";
-  const status = learning?.status?.trim() || "In progress";
+  const status = learning?.status?.trim();
 
   return (
     <Tile
@@ -27,16 +27,18 @@ export function LearningTile({ learning, rise = 3 }: ILearningTileProps) {
         </p>
       </div>
 
-      <div className="mt-auto flex items-center gap-2 pt-1 font-sans text-xs font-bold tracking-widest uppercase text-status-active">
-        <span
-          aria-hidden="true"
-          className="relative flex size-2 shrink-0 items-center justify-center"
-        >
-          <span className="absolute inline-flex size-full animate-ping motion-reduce:animate-none rounded-full bg-status-active/40 duration-1000" />
-          <span className="relative inline-flex size-1.5 rounded-full bg-status-active" />
-        </span>
-        <span>{status}</span>
-      </div>
+      {status && (
+        <div className="mt-auto flex items-center gap-2 pt-1 font-sans text-xs font-bold tracking-widest uppercase text-status-active">
+          <span
+            aria-hidden="true"
+            className="relative flex size-2 shrink-0 items-center justify-center"
+          >
+            <span className="absolute inline-flex size-full animate-ping motion-reduce:animate-none rounded-full bg-status-active/40 duration-1000" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-status-active" />
+          </span>
+          <span>{status}</span>
+        </div>
+      )}
     </Tile>
   );
 }
