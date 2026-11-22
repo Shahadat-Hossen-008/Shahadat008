@@ -35,7 +35,7 @@ export const availabilityField = defineField({
       description:
         "Your current working status, e.g. Open to collaborations. Max 40 characters.",
       initialValue: "Open to collaborations",
-      validation: (rule) => rule.max(40),
+      validation: (rule) => rule.max(120),
     }),
     {
       ...link("cta"),

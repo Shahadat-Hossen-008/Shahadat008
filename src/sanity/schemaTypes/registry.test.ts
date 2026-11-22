@@ -51,6 +51,23 @@ describe("singleton registration", () => {
     expect(heroSection?.type).toBe("object");
     expect(heroField?.type).toBe("heroSection");
   });
+
+  it("allows both rich text blocks and code blocks inside editorialSection.body", () => {
+    const editorialSection = schema.types.find(
+      (type) => type.name === "editorialSection",
+    );
+    const fields =
+      editorialSection && "fields" in editorialSection
+        ? editorialSection.fields
+        : undefined;
+    const bodyField = fields?.find((field) => field.name === "body");
+    const memberTypes =
+      bodyField && "of" in bodyField && Array.isArray(bodyField.of)
+        ? bodyField.of.map((member) => member.type)
+        : [];
+
+    expect(memberTypes).toEqual(["block", "code"]);
+  });
 });
 
 describe("singletonDocumentActions", () => {

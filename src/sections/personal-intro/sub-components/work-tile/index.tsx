@@ -50,19 +50,19 @@ export function WorkTile({ work, featuredProject, rise = 2 }: IWorkTileProps) {
             alt=""
             width={900}
             height={600}
-            className="size-full scale-105 object-cover object-center opacity-40"
+            className="size-full scale-105 object-cover object-center opacity-65 transition-transform duration-500 motion-reduce:transition-none group-hover/work:scale-[1.08]"
           />
-          {/* Rich forest scrim keeps top metadata and bottom narrative well above WCAG AA contrast on any screenshot. */}
-          <div className="absolute inset-0 bg-linear-to-t from-forest via-forest/92 to-forest/80" />
+          {/* Dual-zone forest scrim: protects top metadata (82%) and bottom copy (88-100%) for WCAG AA/AAA contrast while opening a clear window (42%) across the upper-middle screenshot. */}
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-forest)_82%,transparent)_0%,color-mix(in_srgb,var(--color-forest)_42%,transparent)_34%,color-mix(in_srgb,var(--color-forest)_88%,transparent)_68%,var(--color-forest)_100%)]" />
         </div>
       )}
 
       <div className="relative z-10 flex items-center justify-between gap-4">
-        <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-muted-sage">
+        <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-limestone/85">
           {eyebrow}
         </p>
         {year && (
-          <span className="font-sans text-xs font-semibold tabular-nums text-limestone/80">
+          <span className="font-sans text-xs font-semibold tabular-nums text-limestone/90">
             {year}
           </span>
         )}

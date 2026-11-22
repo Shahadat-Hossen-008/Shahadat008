@@ -13,7 +13,7 @@ export const personalIntroSection = defineType({
   type: "document",
   icon: BsGrid3X3Gap,
   description:
-    "A 5-card personal introduction bento grid: Personal Introduction, Selected Project, Currently Building, Beyond Code, and Availability.",
+    "A 5-card personal introduction bento grid: Personal Introduction, Selected Project, Exploring Next, Beyond Code, and Availability.",
   fields: [
     defineField({
       name: "heading",
