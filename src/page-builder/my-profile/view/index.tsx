@@ -1,4 +1,4 @@
-import { HeroBuilder } from "@/sections/hero";
+import { HeroBuilder } from "@/sections/hero/builder";
 import { SectionBuilder } from "@/sections/section-builder";
 import type { IMyProfilePageBuilderProps } from "./interface";
 
@@ -10,7 +10,10 @@ export function MyProfilePageBuilder({
 
   return (
     <div className="bg-background">
-      <HeroBuilder profile={activeProfile} />
+      <HeroBuilder
+        hero={activeProfile?.hero}
+        fullName={activeProfile?.fullName}
+      />
       <SectionBuilder sections={activeProfile?.sections} />
     </div>
   );

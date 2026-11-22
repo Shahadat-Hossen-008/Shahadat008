@@ -1,4 +1,4 @@
-import type { PortableTextBlock } from "next-sanity";
+import type { IPortableTextTypedObject } from "../../interface";
 
 export interface IEditorialSectionProps {
   /**
@@ -11,5 +11,5 @@ export interface IEditorialSectionProps {
   autoNumber?: boolean | null;
   stepNumber?: number | null;
   heading?: string | null;
-  body?: PortableTextBlock[] | null;
+  body?: IPortableTextTypedObject[] | null;
 }

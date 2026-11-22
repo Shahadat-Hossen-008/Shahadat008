@@ -148,6 +148,14 @@ describe("PersonalIntroSectionBuilder", () => {
     expect(html).toContain("Portfolio 2026");
     expect(html).toContain("Rust &amp; WebAssembly");
     expect(html).toContain("Frontend Architecture");
+    // BeyondCodeTile renders clean text pills without hardcoded SVGs
+    expect(html).toContain(">Photography</span>");
+    expect(html).toContain(">Cycling</span>");
+    // AvailabilityTile stacks 18px statusLabel and normal-weight status without a status dot
+    expect(html).toContain('id="personal-intro-avail-title"');
+    expect(html).toContain("text-lg font-medium leading-snug text-forest");
+    expect(html).toContain("font-normal leading-relaxed text-muted-forest");
+    expect(html).not.toContain("size-1.5 shrink-0 rounded-full bg-status-active");
   });
 
   it("safely handles non-string summary (e.g. Portable Text array) without throwing", () => {

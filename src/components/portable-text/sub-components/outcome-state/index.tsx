@@ -22,10 +22,7 @@ export function OutcomeStateBlock({ heading, stats }: IOutcomeStateProps) {
       )}
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(10rem,100%),1fr))] gap-px border border-border bg-border">
         {validStats.map((stat, index) => (
-          <div
-            key={stat._key || index}
-            className="bg-surface px-4 py-5 text-center"
-          >
+          <div key={stat._key || index} className="bg-surface px-4 py-5">
             <div className="font-display text-title font-normal text-foreground">
               {stat.value}
             </div>

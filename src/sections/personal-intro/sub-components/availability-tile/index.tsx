@@ -25,25 +25,21 @@ export function AvailabilityTile({
       rise={rise}
     >
       <div className="flex w-full flex-col gap-3">
-        <div className="flex items-center justify-between gap-3">
-          <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-muted-forest">
-            {eyebrow}
-          </p>
-          <span className="inline-flex shrink-0 items-center gap-1.5 font-sans text-[11px] font-semibold tracking-widest uppercase text-status-active">
-            <span
-              aria-hidden="true"
-              className="size-1.5 rounded-full bg-status-active"
-            />
-            {statusLabel}
-          </span>
-        </div>
-
-        <p
-          id="personal-intro-avail-title"
-          className="font-sans text-base sm:text-button font-semibold text-forest leading-snug"
-        >
-          {status}
+        <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-muted-forest">
+          {eyebrow}
         </p>
+
+        <div className="flex flex-col gap-1.5">
+          <p
+            id="personal-intro-avail-title"
+            className="font-sans text-lg font-medium leading-snug text-forest"
+          >
+            {statusLabel}
+          </p>
+          <p className="font-sans text-sm sm:text-[15px] font-normal leading-relaxed text-muted-forest">
+            {status}
+          </p>
+        </div>
       </div>
 
       {href && (

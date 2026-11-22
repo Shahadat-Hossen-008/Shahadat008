@@ -39,7 +39,7 @@ export const customImage = defineField({
         }),
     }),
     defineField({
-      ...link("link"),
+      ...link("link", { requiredWhen: "isClickable" }),
       hidden: ({ parent }) => !parent?.isClickable,
     }),
   ],

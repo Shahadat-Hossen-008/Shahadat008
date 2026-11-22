@@ -1,6 +1,7 @@
-import { LINK_REFERENCE_FRAGMENT } from "@/fragments";
+import { IMAGE_FILE_FRAGMENT, LINK_REFERENCE_FRAGMENT } from "@/fragments";
 
-export const PRIMARY_HERO_FRAGMENT = /* groq */ `
+export const HERO_FRAGMENT = /* groq */ `
+  "fullName": autherInfo->fullName,
   hero {
     statusLabel,
     location,
@@ -25,9 +26,7 @@ export const PRIMARY_HERO_FRAGMENT = /* groq */ `
     },
     portrait {
       imageFile {
-        asset->{_id, url, metadata{dimensions{width, height}}},
-        crop,
-        hotspot
+        ${IMAGE_FILE_FRAGMENT}
       },
       altText
     },

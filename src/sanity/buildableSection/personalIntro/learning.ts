@@ -4,9 +4,10 @@ const collapsedTile = { collapsible: true, collapsed: true };
 
 export const learningField = defineField({
   name: "learning",
-  title: "Currently building tile",
+  title: "Current focus & exploration tile",
   type: "object",
-  description: "Bottom-left tile: what you are actively building or exploring.",
+  description:
+    "Bottom-left tile: what you are exploring, learning, or interested in next.",
   options: collapsedTile,
   fields: [
     defineField({
@@ -14,25 +15,24 @@ export const learningField = defineField({
       title: "Eyebrow label",
       type: "string",
       description:
-        "Small uppercase label, e.g. Currently building. Max 30 characters.",
-      initialValue: "Currently building",
+        "Small uppercase label, e.g. Exploring next. Max 30 characters.",
+      initialValue: "Exploring next",
       validation: (rule) => rule.max(30),
     }),
     defineField({
       name: "title",
-      title: "Current focus",
+      title: "Topic or exploration",
       type: "string",
       description:
-        "One clear line about what you are actively building or exploring. Max 140 characters.",
+        "One clear line about what you are exploring, learning, or interested in next. Max 140 characters.",
       validation: (rule) => rule.max(140),
     }),
     defineField({
       name: "status",
       title: "Status label",
       type: "string",
-      description:
-        "Status indicator text, e.g. In progress. Max 30 characters.",
-      initialValue: "In progress",
+      description: "Status indicator text, e.g. Exploring. Max 30 characters.",
+      initialValue: "Exploring",
       validation: (rule) => rule.max(30),
     }),
   ],

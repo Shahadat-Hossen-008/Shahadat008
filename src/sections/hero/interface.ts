@@ -1,14 +1,31 @@
-import type { PROFILE_QUERYResult } from "@/sanity/types";
+import type { CustomImage } from "@/sanity/types";
 
-/**
- * `PROFILE_QUERY` is a singleton lookup, so its result can be `null` and `hero`
- * is optional on the document. These aliases unwrap those two levels without
- * hand-copying field shapes from the generated types.
- */
-export type ProfileResult = NonNullable<PROFILE_QUERYResult>;
+export interface IHeroCta {
+  href: string;
+  label: string;
+  external: boolean;
+}
 
-export type HeroData = NonNullable<ProfileResult["hero"]>;
+export interface IHeroFact {
+  label: string;
+  value: string;
+}
 
-export interface IHeroBuilderProps {
-  profile: PROFILE_QUERYResult;
+export interface IHeroProps {
+  statusLabel: string;
+  location: string;
+  subline: string;
+  parts: string[];
+  primaryCta: IHeroCta | null;
+  secondaryCta: IHeroCta | null;
+  hasActions: boolean;
+  showEyebrow: boolean;
+  showPanel: boolean;
+  nowBuildingTitle: string;
+  nowBuildingDescription: string;
+  progress: number | null;
+  facts: IHeroFact[];
+  portraitImage: CustomImage["imageFile"] | null;
+  portraitAlt?: string;
+  initials: string;
 }

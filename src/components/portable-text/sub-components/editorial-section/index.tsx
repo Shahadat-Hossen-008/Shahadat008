@@ -65,7 +65,7 @@ export function EditorialSectionBlock({
       <div className="grid grid-cols-1 gap-6 bento:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] bento:gap-12">
         <div className="min-w-0">
           {formattedLabel && (
-            <p className="font-mono text-label uppercase text-muted-foreground">
+            <p className="font-mono pt-2 text-label uppercase text-muted-foreground">
               {formattedLabel}
             </p>
           )}

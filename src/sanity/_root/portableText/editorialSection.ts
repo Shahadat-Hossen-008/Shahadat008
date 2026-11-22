@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { SplitVerticalIcon } from "@sanity/icons";
 import { toPlainText } from "@portabletext/react";
 import { block } from "./block";
+import { code } from "./code";
 
 export const editorialSection = defineType({
   name: "editorialSection",
@@ -45,9 +46,9 @@ export const editorialSection = defineType({
       name: "body",
       title: "Narrative Body",
       description:
-        "Rich text paragraphs, headings, bullet points, quotes, and links for this editorial section.",
+        "Rich text paragraphs, headings, bullet points, quotes, links, and code blocks for this editorial section.",
       type: "array",
-      of: [defineArrayMember(block)],
+      of: [defineArrayMember(block), defineArrayMember(code)],
       validation: (rule) =>
         rule.required().error("Please provide the narrative content."),
     }),

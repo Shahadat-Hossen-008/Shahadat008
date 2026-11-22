@@ -53,4 +53,23 @@ describe("SanityImage alt text", () => {
     expect(nullHtml).not.toContain("null");
     expect(nullHtml).not.toContain("portfolio of");
   });
+
+  it("preserves aspect ratio without server-side cropping when fit='max' and supports eager LCP loading", () => {
+    const html = renderToStaticMarkup(
+      <SanityImage
+        image={mockImage}
+        alt="Full UI screenshot"
+        width={1600}
+        fit="max"
+        priority
+        className="block w-full h-auto"
+      />,
+    );
+
+    expect(html).toContain("w=1600");
+    expect(html).toContain("fit=max");
+    expect(html).not.toContain("h=1000");
+    expect(html).toContain('loading="eager"');
+    expect(html).toMatch(/fetchpriority="high"/i);
+  });
 });

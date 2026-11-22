@@ -1,13 +1,13 @@
 import { getInitials, splitHeadline } from "@/lib/hero";
 import { resolveLink } from "@/lib/sanity/links";
 import type { CustomImage } from "@/sanity/types";
-import { PrimaryHero } from "../index";
+import { Hero } from "../index";
 import type { IHeroCta, IHeroProps } from "../interface";
-import type { ISanityPrimaryHeroProps } from "./interface";
+import type { HeroData, ISanityHeroProps } from "./interface";
 
-type HeroCta = ISanityPrimaryHeroProps["hero"]["primaryCta"];
+type HeroCta = HeroData["primaryCta"];
 type PortraitImageFile = NonNullable<
-  NonNullable<ISanityPrimaryHeroProps["hero"]["portrait"]>["imageFile"]
+  NonNullable<HeroData["portrait"]>["imageFile"]
 >;
 
 /**
@@ -76,7 +76,9 @@ function resolveHeadlineParts(
   return [headline];
 }
 
-export function PrimaryHeroBuilder({ hero, fullName }: ISanityPrimaryHeroProps) {
+export function HeroBuilder({ hero, fullName }: ISanityHeroProps) {
+  if (!hero?.headline?.trim()) return null;
+
   const statusLabel = hero.statusLabel?.trim() ?? "";
   const location = hero.location?.trim() ?? "";
   const subline = hero.subline?.trim() ?? "";
@@ -129,7 +131,7 @@ export function PrimaryHeroBuilder({ hero, fullName }: ISanityPrimaryHeroProps) 
     initials,
   };
 
-  return <PrimaryHero {...props} />;
+  return <Hero {...props} />;
 }
 
-export default PrimaryHeroBuilder;
+export default HeroBuilder;
