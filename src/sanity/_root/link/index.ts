@@ -1,5 +1,5 @@
 import { EarthGlobeIcon, LinkIcon, PinIcon } from "@sanity/icons";
-import { defineField } from "sanity";
+import { defineField, getValueAtPath, type ValidationContext } from "sanity";
 
 import { INTERNAL_REFERENCE_TYPES } from "@/lib/sanity/routes";
 import {
@@ -9,8 +9,33 @@ import {
 } from "@/lib/sanity/links";
 export { LINK_TYPES, LINK_TYPE_LABELS } from "@/lib/sanity/links";
 
+export interface ILinkFieldOptions {
+  /** Whether link fields are required. Defaults to `true`. */
+  required?: boolean;
+  /**
+   * Optional sibling boolean field name on the enclosing object (e.g. `"isClickable"`).
+   * When set, link validation runs only when that sibling field is truthy.
+   */
+  requiredWhen?: string;
+}
+
 /** Creates an inline link field using the shared link behavior and validation. */
-export const link = (name = "link") => {
+export const link = (name = "link", options?: ILinkFieldOptions) => {
+  const isAlwaysRequired =
+    options?.required !== false && !options?.requiredWhen;
+  const isRequired = (context: ValidationContext): boolean => {
+    if (options?.required === false) return false;
+    if (options?.requiredWhen) {
+      const enclosingPath = context.path?.slice(0, -2);
+      if (!enclosingPath?.length) return false;
+      const enclosing = getValueAtPath(context.document, enclosingPath) as
+        | Record<string, unknown>
+        | undefined;
+      return Boolean(enclosing?.[options.requiredWhen]);
+    }
+    return true;
+  };
+
   return defineField({
     name,
     title: "Link",
@@ -21,7 +46,15 @@ export const link = (name = "link") => {
         name: "label",
         title: "Label",
         type: "string",
-        validation: (rule) => rule.required().error("A label is required."),
+        validation: (rule) =>
+          isAlwaysRequired
+            ? rule.required().error("A label is required.")
+            : rule.custom((value, context) => {
+                if (!isRequired(context)) return true;
+                return typeof value === "string" && value.trim().length > 0
+                  ? true
+                  : "A label is required.";
+              }),
       }),
       defineField({
         name: "type",
@@ -32,7 +65,15 @@ export const link = (name = "link") => {
           layout: "radio",
         },
         initialValue: "external",
-        validation: (rule) => rule.required().error("Pick a link type."),
+        validation: (rule) =>
+          isAlwaysRequired
+            ? rule.required().error("Pick a link type.")
+            : rule.custom((value, context) => {
+                if (!isRequired(context)) return true;
+                return typeof value === "string" && value.length > 0
+                  ? true
+                  : "Pick a link type.";
+              }),
       }),
       defineField({
         name: "reference",
@@ -47,6 +88,7 @@ export const link = (name = "link") => {
         hidden: ({ parent }) => (parent as { type?: string })?.type !== "internal",
         validation: (rule) =>
           rule.custom((value, context) => {
+            if (!isRequired(context)) return true;
             const type = (context.parent as { type?: string })?.type;
             if (type !== "internal") return true;
             return value ? true : "Choose the page this link should open.";
@@ -64,6 +106,7 @@ export const link = (name = "link") => {
         hidden: ({ parent }) => (parent as { type?: string })?.type === "internal",
         validation: (rule) =>
           rule.custom((value, context) => {
+            if (!isRequired(context)) return true;
             const type = (context.parent as { type?: string })?.type;
             const trimmed = typeof value === "string" ? value.trim() : "";
 

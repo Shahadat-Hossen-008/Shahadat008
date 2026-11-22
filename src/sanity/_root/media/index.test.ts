@@ -54,6 +54,9 @@ const compiledSchema = createSchema({
         defineField({
           ...link("standaloneLink"),
         }),
+        defineField({
+          ...link("optionalLink", { required: false }),
+        }),
       ],
     }),
   ],
@@ -303,23 +306,48 @@ describe("customImage conditional shared link schema", () => {
     );
   });
 
-  it("documents accepted Option A trade-off: hidden partial leftover link data still triggers shared link validation", async () => {
+  it("produces no validation errors when isClickable is false even with Studio auto-initialized link defaults", async () => {
+    const autoInitializedLink = {
+      type: "external",
+      openInNewTab: false,
+      isDisabled: false,
+    };
+
     const markers = await validateDoc({
       heroImage: makeImage({
         isClickable: false,
-        link: { type: "external" },
+        link: autoInitializedLink,
       }),
+      nestedGroup: {
+        portrait: makeImage({
+          isClickable: false,
+          link: autoInitializedLink,
+        }),
+      },
+      body: [
+        {
+          _key: "img-auto",
+          _type: "portableTextImage",
+          altText: "Diagram",
+          isClickable: false,
+          link: autoInitializedLink,
+        },
+      ],
+    });
+
+    const errors = markers.filter((m) => m.level === "error");
+    expect(errors).toEqual([]);
+  });
+
+  it("allows static { required: false } on shared link() without errors", async () => {
+    const markers = await validateDoc({
+      optionalLink: { type: "external", openInNewTab: false, isDisabled: false },
     });
 
     const errors = markers.filter(
-      (m) => m.level === "error" && m.path[0] === "heroImage",
+      (m) => m.level === "error" && m.path[0] === "optionalLink",
     );
-    expect(errors.map((m) => m.message)).toEqual(
-      expect.arrayContaining([
-        "A label is required.",
-        "An external link needs a URL.",
-      ]),
-    );
+    expect(errors).toEqual([]);
   });
 
   it("does not weaken standalone shared link() validation outside customImage", async () => {
