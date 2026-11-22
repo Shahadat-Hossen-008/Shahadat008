@@ -347,7 +347,11 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .bento-tile {
-    transition: box-shadow 0.25s var(--ease-soft);
+    translate: 0 0;
+    will-change: translate;
+    transition:
+      translate 0.42s var(--ease-soft),
+      box-shadow 0.42s var(--ease-soft);
   }
 
   .bento-cta-button {
@@ -361,16 +365,34 @@
     background-color: var(--color-lime);
   }
 
-  .bento-tile:has(a:hover, a:focus-visible) {
-    box-shadow:
-      var(--tile-ring-hover),
-      0 14px 32px -14px color-mix(in srgb, var(--color-forest) 32%, transparent);
+  @media (hover: hover) {
+    .bento-tile:hover {
+      translate: 0 -4px;
+      box-shadow:
+        var(--tile-ring-hover),
+        0 18px 36px -14px color-mix(in srgb, var(--color-forest) 34%, transparent);
+    }
+
+    [data-tone="light"]:hover {
+      translate: 0 -4px;
+      box-shadow:
+        var(--tile-ring-hover),
+        0 10px 24px -8px color-mix(in srgb, var(--color-forest) 14%, transparent);
+    }
   }
 
-  [data-tone="light"]:has(a:hover, a:focus-visible) {
+  .bento-tile:has(a:focus-visible) {
+    translate: 0 -4px;
     box-shadow:
       var(--tile-ring-hover),
-      0 6px 18px -6px color-mix(in srgb, var(--color-forest) 12%, transparent);
+      0 18px 36px -14px color-mix(in srgb, var(--color-forest) 34%, transparent);
+  }
+
+  [data-tone="light"]:has(a:focus-visible) {
+    translate: 0 -4px;
+    box-shadow:
+      var(--tile-ring-hover),
+      0 10px 24px -8px color-mix(in srgb, var(--color-forest) 14%, transparent);
   }
 
   .bento-type-item[data-animated] {

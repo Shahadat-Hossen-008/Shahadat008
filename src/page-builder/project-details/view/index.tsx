@@ -123,45 +123,44 @@ export function ProjectDetailsView({ project }: IProjectDetailsProps) {
           </div>
         )}
 
-        {/* Featured Hero Mockup*/}
+        {/* Scannable Metadata Strip: positioned above the hero visual for fast recruiter & manager scanning */}
+        {metadataItems.length > 0 && (
+          <dl
+            className={`mt-8 sm:mt-10 border-y border-foreground/15 py-5 sm:py-6 grid gap-x-6 gap-y-5 sm:gap-8 ${
+              metadataItems.length >= 4
+                ? "grid-cols-2 md:grid-cols-4"
+                : metadataItems.length === 3
+                  ? "grid-cols-2 sm:grid-cols-3"
+                  : "grid-cols-2"
+            }`}
+          >
+            {metadataItems.map((item) => (
+              <div
+                key={item.label}
+                className="flex min-w-0 flex-col gap-1 items-start text-left"
+              >
+                <dt className="font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {item.label}
+                </dt>
+                <dd className="font-sans text-sm sm:text-base font-semibold leading-snug text-foreground wrap-anywhere text-pretty">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {/* Featured Hero Mockup: preserves natural aspect ratio (fit="max") so UI screenshots are never cropped */}
         {project.projectImage?.imageFile && (
-          <div className="mt-10 sm:mt-14 w-full rounded-2xl overflow-hidden border border-foreground/15 bg-surface/50 shadow-sm">
+          <div className="mt-8 sm:mt-12 w-full rounded-2xl overflow-hidden border border-foreground/15 bg-surface/50 shadow-sm">
             <SanityImage
               image={project.projectImage.imageFile}
               alt={project.projectImage.altText || project.projectTitle}
               width={1600}
-              height={1000}
-              className="w-full h-auto object-cover"
+              fit="max"
+              priority
+              className="block w-full h-auto"
             />
-          </div>
-        )}
-
-        {/* Flexible 4-Column Metadata Strip */}
-        {metadataItems.length > 0 && (
-          <div className="mt-12 sm:mt-16 border-y border-foreground/15 py-8">
-            <div
-              className={`grid gap-6 sm:gap-8 ${
-                metadataItems.length >= 4
-                  ? "grid-cols-2 md:grid-cols-4"
-                  : metadataItems.length === 3
-                    ? "grid-cols-1 sm:grid-cols-3"
-                    : "grid-cols-2"
-              }`}
-            >
-              {metadataItems.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col gap-1.5 items-center"
-                >
-                  <span className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {item.label}
-                  </span>
-                  <span className="font-sans text-sm sm:text-base font-semibold text-foreground">
-                    {item.value}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         )}
 

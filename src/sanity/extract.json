@@ -1393,7 +1393,7 @@
                 "value": {
                   "type": "string"
                 },
-                "optional": false
+                "optional": true
               },
               "type": {
                 "type": "objectAttribute",
@@ -1410,7 +1410,7 @@
                     }
                   ]
                 },
-                "optional": false
+                "optional": true
               },
               "reference": {
                 "type": "objectAttribute",
@@ -2400,393 +2400,413 @@
           "value": {
             "type": "array",
             "of": {
-              "type": "object",
-              "attributes": {
-                "children": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "array",
-                    "of": {
-                      "type": "object",
-                      "attributes": {
-                        "marks": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "array",
-                            "of": {
-                              "type": "string"
+              "type": "union",
+              "of": [
+                {
+                  "type": "object",
+                  "attributes": {
+                    "children": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "array",
+                        "of": {
+                          "type": "object",
+                          "attributes": {
+                            "marks": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "array",
+                                "of": {
+                                  "type": "string"
+                                }
+                              },
+                              "optional": true
+                            },
+                            "text": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "string"
+                              },
+                              "optional": true
+                            },
+                            "_type": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "string",
+                                "value": "span"
+                              }
                             }
                           },
-                          "optional": true
-                        },
-                        "text": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "_type": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string",
-                            "value": "span"
+                          "rest": {
+                            "type": "object",
+                            "attributes": {
+                              "_key": {
+                                "type": "objectAttribute",
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
                           }
                         }
                       },
-                      "rest": {
-                        "type": "object",
-                        "attributes": {
-                          "_key": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string"
+                      "optional": true
+                    },
+                    "style": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "union",
+                        "of": [
+                          {
+                            "type": "string",
+                            "value": "normal"
+                          },
+                          {
+                            "type": "string",
+                            "value": "h1"
+                          },
+                          {
+                            "type": "string",
+                            "value": "h2"
+                          },
+                          {
+                            "type": "string",
+                            "value": "h3"
+                          },
+                          {
+                            "type": "string",
+                            "value": "blockquote"
+                          }
+                        ]
+                      },
+                      "optional": true
+                    },
+                    "listItem": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "union",
+                        "of": [
+                          {
+                            "type": "string",
+                            "value": "bullet"
+                          },
+                          {
+                            "type": "string",
+                            "value": "number"
+                          }
+                        ]
+                      },
+                      "optional": true
+                    },
+                    "markDefs": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "array",
+                        "of": {
+                          "type": "object",
+                          "attributes": {
+                            "label": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "string"
+                              },
+                              "optional": false
+                            },
+                            "type": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "union",
+                                "of": [
+                                  {
+                                    "type": "string",
+                                    "value": "internal"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "value": "external"
+                                  }
+                                ]
+                              },
+                              "optional": false
+                            },
+                            "reference": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "union",
+                                "of": [
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "myProfilePage"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "aboutPage"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "projectPage"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "project"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "blogPage"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "blogPost"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "attributes": {
+                                      "_ref": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "_type": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "string",
+                                          "value": "reference"
+                                        }
+                                      },
+                                      "_weak": {
+                                        "type": "objectAttribute",
+                                        "value": {
+                                          "type": "boolean"
+                                        },
+                                        "optional": true
+                                      }
+                                    },
+                                    "dereferencesTo": "contactPage"
+                                  }
+                                ]
+                              },
+                              "optional": true
+                            },
+                            "url": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "string"
+                              },
+                              "optional": true
+                            },
+                            "openInNewTab": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
+                            "isDisabled": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "boolean"
+                              },
+                              "optional": true
+                            },
+                            "_type": {
+                              "type": "objectAttribute",
+                              "value": {
+                                "type": "string",
+                                "value": "linkUrl"
+                              }
+                            }
+                          },
+                          "rest": {
+                            "type": "object",
+                            "attributes": {
+                              "_key": {
+                                "type": "objectAttribute",
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
                             }
                           }
                         }
+                      },
+                      "optional": true
+                    },
+                    "level": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "number"
+                      },
+                      "optional": true
+                    },
+                    "_type": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string",
+                        "value": "block"
                       }
                     }
                   },
-                  "optional": true
-                },
-                "style": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "union",
-                    "of": [
-                      {
-                        "type": "string",
-                        "value": "normal"
-                      },
-                      {
-                        "type": "string",
-                        "value": "h1"
-                      },
-                      {
-                        "type": "string",
-                        "value": "h2"
-                      },
-                      {
-                        "type": "string",
-                        "value": "h3"
-                      },
-                      {
-                        "type": "string",
-                        "value": "blockquote"
-                      }
-                    ]
-                  },
-                  "optional": true
-                },
-                "listItem": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "union",
-                    "of": [
-                      {
-                        "type": "string",
-                        "value": "bullet"
-                      },
-                      {
-                        "type": "string",
-                        "value": "number"
-                      }
-                    ]
-                  },
-                  "optional": true
-                },
-                "markDefs": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "array",
-                    "of": {
-                      "type": "object",
-                      "attributes": {
-                        "label": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string"
-                          },
-                          "optional": false
-                        },
-                        "type": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "union",
-                            "of": [
-                              {
-                                "type": "string",
-                                "value": "internal"
-                              },
-                              {
-                                "type": "string",
-                                "value": "external"
-                              }
-                            ]
-                          },
-                          "optional": false
-                        },
-                        "reference": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "union",
-                            "of": [
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "myProfilePage"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "aboutPage"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "projectPage"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "project"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "blogPage"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "blogPost"
-                              },
-                              {
-                                "type": "object",
-                                "attributes": {
-                                  "_ref": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "_type": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "string",
-                                      "value": "reference"
-                                    }
-                                  },
-                                  "_weak": {
-                                    "type": "objectAttribute",
-                                    "value": {
-                                      "type": "boolean"
-                                    },
-                                    "optional": true
-                                  }
-                                },
-                                "dereferencesTo": "contactPage"
-                              }
-                            ]
-                          },
-                          "optional": true
-                        },
-                        "url": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "openInNewTab": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "boolean"
-                          },
-                          "optional": true
-                        },
-                        "isDisabled": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "boolean"
-                          },
-                          "optional": true
-                        },
-                        "_type": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string",
-                            "value": "linkUrl"
-                          }
-                        }
-                      },
-                      "rest": {
-                        "type": "object",
-                        "attributes": {
-                          "_key": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string"
-                            }
-                          }
+                  "rest": {
+                    "type": "object",
+                    "attributes": {
+                      "_key": {
+                        "type": "objectAttribute",
+                        "value": {
+                          "type": "string"
                         }
                       }
                     }
-                  },
-                  "optional": true
+                  }
                 },
-                "level": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "number"
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
                   },
-                  "optional": true
-                },
-                "_type": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "string",
-                    "value": "block"
+                  "rest": {
+                    "type": "inline",
+                    "name": "code"
                   }
                 }
-              },
-              "rest": {
-                "type": "object",
-                "attributes": {
-                  "_key": {
-                    "type": "objectAttribute",
-                    "value": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
+              ]
             }
           },
           "optional": false
