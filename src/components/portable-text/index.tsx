@@ -151,7 +151,7 @@ export function createPortableTextComponents(
             }
             body={
               Array.isArray(value.body)
-                ? (value.body as PortableTextBlock[])
+                ? (value.body as IPortableTextTypedObject[])
                 : undefined
             }
           />

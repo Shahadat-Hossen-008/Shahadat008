@@ -79,7 +79,11 @@ describe("ProjectDetailsView", () => {
     expect(html).toContain('href="https://analytics.example.com"');
     expect(html).toContain('href="https://github.com/example/analytics"');
 
-    // Metadata Ribbon items
+    // Metadata Ribbon items (semantic dl/dt/dd, left-aligned for mobile readability)
+    expect(html).toContain("<dl");
+    expect(html).toContain("<dt");
+    expect(html).toContain("<dd");
+    expect(html).toContain("items-start text-left");
     expect(html).toContain("ROLE");
     expect(html).toContain("Lead Full-Stack Engineer");
     expect(html).toContain("DURATION");

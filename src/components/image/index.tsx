@@ -25,32 +25,34 @@ export function SanityImage({
   width,
   height,
   className,
+  fit,
+  priority = false,
 }: ISanityImageProps) {
-  if (!image || !width || !height) return null;
+  if (!image || !width) return null;
+
+  const preserveAspect = fit === "max" || !height;
+
+  const buildUrl = (quality: number) => {
+    const base = urlFor(image).auto("format").quality(quality).width(width);
+    return preserveAspect
+      ? base.fit("max").url()
+      : base.height(height).url();
+  };
 
   return (
     <picture>
       <source
-        srcSet={urlFor(image)
-          .auto("format")
-          .quality(75)
-          .width(width)
-          .height(height)
-          .url()}
+        srcSet={buildUrl(75)}
         type="image/webp" /**only tells the browser what the resource *is**/
       />
       <img
-        src={urlFor(image)
-          .auto("format") /* Sanity will pick the format automatically. */
-          .quality(80)
-          .width(width)
-          .height(height)
-          .url()}
+        src={buildUrl(80)}
         alt={alt ?? ""}
         width={width}
-        height={height}
+        height={preserveAspect ? undefined : height}
         className={className}
-        loading="lazy"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
         decoding="async"
       />
     </picture>
